@@ -3,7 +3,6 @@
 namespace Lmh\WeChatPayV3\Kernel\Traits;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\Certificate;
 use Lmh\WeChatPayV3\Kernel\Exceptions\SignInvalidException;
@@ -37,11 +36,10 @@ trait SignatureGenerator
             }),
         ];
         $authFormat = '%s mchid="%s",serial_no="%s",nonce_str="%s",timestamp="%s",signature="%s"';
-
         return sprintf($authFormat, ...[
             $this->authType,
-            Config::get('wechatpay-v3.app_id'),
-            Config::get('wechatpay-v3.serial_no'),
+            $this->app->config->get('app_id'),
+            $this->app->config->get('serial_no'),
             $payload['nonce_str'],
             $payload['timestamp'],
             $this->sign($payload),
@@ -57,7 +55,7 @@ trait SignatureGenerator
     public function sign(array $payload)
     {
         $signData = implode("\n", $payload)."\n";
-        $clientKey = Config::get('wechatpay-v3.private_key');
+        $clientKey =  $this->app->config->get('private_key');
         openssl_sign($signData, $sign, $clientKey, OPENSSL_ALGO_SHA256);
 
         return base64_encode($sign);

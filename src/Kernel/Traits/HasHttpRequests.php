@@ -171,14 +171,12 @@ trait HasHttpRequests
      */
     public function getHttpClient(): ClientInterface
     {
-        if ($this->httpClient instanceof ClientInterface) {
-            return $this->httpClient;
-        }
-
-        if (Container::getInstance()->has('guzzle')) {
-            $this->httpClient = App::make('guzzle');
-        } else {
-            $this->httpClient = new Client();
+        if (!($this->httpClient instanceof ClientInterface)) {
+            if (property_exists($this, 'app') && $this->app['http_client']) {
+                $this->httpClient = $this->app['http_client'];
+            } else {
+                $this->httpClient = new Client(['handler' => HandlerStack::create($this->getGuzzleHandler())]);
+            }
         }
 
         return $this->httpClient;

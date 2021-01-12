@@ -217,22 +217,22 @@ class BaseClient
             RequestInterface $request,
             ResponseInterface $response = null
         ) {
-            if ($retries >= $this->app['config']->max_retries) {
-                return false;
+            // Limit the number of retries to 2
+            if ($retries < $this->app['config']->get('http.max_retries', 1) && $response && $body = $response->getBody()) {
+                // Retry on server errors
+                $response = json_decode($body, true);
+
+                if (!empty($response['errcode']) && in_array(abs($response['errcode']), [40001, 40014, 42001], true)) {
+                    $this->accessToken->refresh();
+                    $this->app['logger']->debug('Retrying with refreshed access token.');
+
+                    return true;
+                }
             }
 
-            if (is_null($response) || !in_array($response->getStatusCode(), [429, 500, 502, 503])) {
-                return false;
-            }
-
-            return true;
-        }, function ($retries, ResponseInterface $response) {
-            if ($response->getStatusCode() == 429) {
-                // too many request (FREQUENCY_LIMITED)
-                return $retries * 5000;
-            }
-
-            return abs($this->app['config']->retry_delay);
+            return false;
+        }, function () {
+            return abs($this->app['config']->get('http.retry_delay', 500));
         });
     }
 }

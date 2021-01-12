@@ -3,6 +3,7 @@
 namespace Lmh\WeChatPayV3\Kernel;
 
 use Lmh\WeChatPayV3\Kernel\Providers\ConfigServiceProvider;
+use Lmh\WeChatPayV3\Kernel\Providers\HttpClientServiceProvider;
 use Pimple\Container;
 
 /**
@@ -55,6 +56,8 @@ class ServiceContainer extends Container
                 'max_retries' => 1,
                 'retry_delay' => 500,
             ],
+            'app_id' => '',
+            'serial_no' => '',
         ];
 
         return array_replace_recursive($base, $this->defaultConfig, $this->userConfig);
@@ -69,6 +72,7 @@ class ServiceContainer extends Container
     {
         return array_merge([
             ConfigServiceProvider::class,
+            HttpClientServiceProvider::class,
         ], $this->providers);
     }
 

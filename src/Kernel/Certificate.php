@@ -60,7 +60,7 @@ class Certificate
                 throw new SignInvalidException('没有可用的平台证书');
             }
             $serialNo = Arr::get($certificate, 'serial_no');
-            $aesKey = $this->app['config']->aes_key;
+            $aesKey = $this->app['config']->get('aes_key');
             $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
             Cache::put($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
 
@@ -115,7 +115,7 @@ class Certificate
             if (empty($certificate)) {
                 throw new SignInvalidException('证书序列号不存在于可用的证书列表中');
             }
-            $aesKey = $this->app['config']->aes_key;
+            $aesKey = $this->app['config']->get('aes_key');
             $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
             Cache::put(self::SERIAL_NUMBER_CACHE, $serialNo, $ttl);
 
