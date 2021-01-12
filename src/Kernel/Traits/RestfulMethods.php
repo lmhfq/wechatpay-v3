@@ -2,6 +2,7 @@
 
 namespace Lmh\WeChatPayV3\Kernel\Traits;
 
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
