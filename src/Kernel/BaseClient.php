@@ -141,7 +141,7 @@ class BaseClient
                             if (!is_null($value)) {
                                 $decryptedValue = RsaUtil::privateDecrypt(
                                     $value,
-                                    Config::get('wechatpay-v3.private_key')
+                                    $this->app['config']->private_key
                                 );
 
                                 Arr::set($params, $decodeParam, $decryptedValue);
@@ -217,7 +217,7 @@ class BaseClient
             RequestInterface $request,
             ResponseInterface $response = null
         ) {
-            if ($retries >= Config::get('http.max_retries', 1)) {
+            if ($retries >= $this->app['config']->max_retries) {
                 return false;
             }
 
@@ -232,7 +232,7 @@ class BaseClient
                 return $retries * 5000;
             }
 
-            return abs(Config::get('http.retry_delay', 500));
+            return abs($this->app['config']->retry_delay);
         });
     }
 }
