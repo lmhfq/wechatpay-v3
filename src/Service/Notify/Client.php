@@ -3,7 +3,6 @@
 namespace Lmh\WeChatPayV3\Service\Notify;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\InvalidArgumentException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\RuntimeException;
@@ -23,7 +22,7 @@ class Client extends BaseClient
      */
     public function parseResource(array $resource)
     {
-        $aesKey = Config::get('wechatpay-v3.aes_key', '');
+        $aesKey = $this->app['config']->get('aes_key');
         $associatedData = Arr::get($resource, 'associated_data');
         $nonceStr = Arr::get($resource, 'nonce');
         $cipherText = Arr::get($resource, 'ciphertext');

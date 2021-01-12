@@ -2,7 +2,6 @@
 
 namespace Lmh\WeChatPayV3\Service\CombineTransaction;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 
