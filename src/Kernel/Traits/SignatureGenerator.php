@@ -36,9 +36,10 @@ trait SignatureGenerator
             }),
         ];
         $authFormat = '%s mchid="%s",serial_no="%s",nonce_str="%s",timestamp="%s",signature="%s"';
+
         return sprintf($authFormat, ...[
             $this->authType,
-            $this->app->config->get('app_id'),
+            $this->app->config->get('mch_id'),
             $this->app->config->get('serial_no'),
             $payload['nonce_str'],
             $payload['timestamp'],
@@ -54,7 +55,7 @@ trait SignatureGenerator
      */
     public function sign(array $payload)
     {
-        $signData = implode("\n", $payload)."\n";
+        $signData = implode("\n", $payload)."\n"; 
         $clientKey =  $this->app->config->get('private_key');
         openssl_sign($signData, $sign, $clientKey, OPENSSL_ALGO_SHA256);
 

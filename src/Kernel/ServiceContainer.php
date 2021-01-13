@@ -26,11 +26,13 @@ class ServiceContainer extends Container
      */
     protected $userConfig = [];
 
-    public function __construct(array $values = [])
+    public function __construct(array $config = [], array $prepends = [])
     {
+        $this->userConfig = $config;
+
         $this->registerProviders($this->getProviders());
 
-        parent::__construct($values);
+        parent::__construct($prepends);
     }
 
     /**
@@ -56,10 +58,14 @@ class ServiceContainer extends Container
                 'max_retries' => 1,
                 'retry_delay' => 500,
             ],
-            'app_id' => '',
+            //商户号
+            'mch_id' => '',
+            //商户API证书序列号
             'serial_no' => '',
+            //商户私钥
+            'private_key' => '',
+            'aes_key' => ''
         ];
-
         return array_replace_recursive($base, $this->defaultConfig, $this->userConfig);
     }
 

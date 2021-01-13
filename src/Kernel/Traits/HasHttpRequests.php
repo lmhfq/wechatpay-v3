@@ -5,9 +5,7 @@ namespace Lmh\WeChatPayV3\Kernel\Traits;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
-use Illuminate\Container\Container;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\App;
 use Psr\Http\Message\ResponseInterface;
 
 trait HasHttpRequests
@@ -178,7 +176,6 @@ trait HasHttpRequests
                 $this->httpClient = new Client(['handler' => HandlerStack::create($this->getGuzzleHandler())]);
             }
         }
-
         return $this->httpClient;
     }
 

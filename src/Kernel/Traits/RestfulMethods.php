@@ -25,18 +25,17 @@ trait RestfulMethods
 
     public static function classUrl()
     {
-        return '/v3/'.static::className().'/';
+        return '/v3/' . static::className();
     }
 
     public static function className()
     {
         $className = get_called_class();
         $classes = explode('\\', $className);
-        $classes = array_slice($classes, 2, count($classes) - 3);
+        $classes = array_slice($classes, 3, -1);
         foreach ($classes as $key => $val) {
             $classes[$key] = $key == count($classes) - 1 ? Str::plural(Str::snake($val)) : strtolower($val);
         };
-
         return implode('/', $classes);
     }
 
@@ -57,7 +56,7 @@ trait RestfulMethods
 
     public function instanceUrl($id)
     {
-        return self::classUrl().$id;
+        return self::classUrl() . $id;
     }
 
     /**
