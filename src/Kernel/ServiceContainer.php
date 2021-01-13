@@ -64,7 +64,8 @@ class ServiceContainer extends Container
             'serial_no' => '',
             //商户私钥
             'private_key' => '',
-            'aes_key' => ''
+            'aes_key' => '',
+            'redisClient' => null
         ];
         return array_replace_recursive($base, $this->defaultConfig, $this->userConfig);
     }

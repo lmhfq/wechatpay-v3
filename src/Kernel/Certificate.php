@@ -4,8 +4,6 @@ namespace Lmh\WeChatPayV3\Kernel;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Lmh\WeChatPayV3\Kernel\Exceptions\DecryptException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\InvalidArgumentException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\RuntimeException;
@@ -16,8 +14,8 @@ use Pimple\Container;
 
 class Certificate
 {
-    const CERTIFICATE_CACHE_PREFIX = 'laravel-wechatpay-v3.kernel.certificate.';
-    const SERIAL_NUMBER_CACHE = 'laravel-wechatpay-v3.kernel.serial-no';
+    const CERTIFICATE_CACHE_PREFIX = 'openpay-wechatpay-v3.kernel.certificate.';
+    const SERIAL_NUMBER_CACHE = 'openpay-wechatpay-v3.kernel.serial-no';
 
     /**
      * @var \Pimple\Container
@@ -39,33 +37,38 @@ class Certificate
     public function getAvailableSerialNo()
     {
         $ttl = Carbon::now()->addHours(12);
-
-        return Cache::remember(self::SERIAL_NUMBER_CACHE, $ttl, function () use ($ttl) {
-            /** @var Client $certificateClient */
-            $certificateClient = $this->app['certificate'];
-            $certificates = collect(Arr::get($certificateClient->all(), 'data'));
-            if ($certificates->isEmpty()) {
-                throw new SignInvalidException('没有可用的平台证书列表');
-            }
-            $certificate = $certificates->reduce(function ($carry, $certificate) {
-                if (empty($carryExpireTime = Arr::get($carry, 'expire_time'))) {
-                    return $certificate;
-                }
-                $carryExpireTime = Carbon::createFromTimeString($carryExpireTime);
-                $expireTime = Carbon::createFromTimeString(Arr::get($certificate, 'expire_time'));
-
-                return $carryExpireTime->gt($expireTime) ? $carryExpireTime : $expireTime;
-            });
-            if (!$certificate) {
-                throw new SignInvalidException('没有可用的平台证书');
-            }
-            $serialNo = Arr::get($certificate, 'serial_no');
-            $aesKey = $this->app['config']->get('aes_key');
-            $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
-            Cache::put($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
-
+        /**
+         * @var \Redis $cache
+         */
+        $cache = $this->app->config->get('redisClient');
+        $serialNo = $cache->get(self::SERIAL_NUMBER_CACHE);
+        if ($serialNo) {
             return $serialNo;
+        }
+        /** @var Client $certificateClient */
+        $certificateClient = $this->app['certificate'];
+        $certificates = collect(Arr::get($certificateClient->all(), 'data'));
+        if ($certificates->isEmpty()) {
+            throw new SignInvalidException('没有可用的平台证书列表');
+        }
+        $certificate = $certificates->reduce(function ($carry, $certificate) {
+            if (empty($carryExpireTime = Arr::get($carry, 'expire_time'))) {
+                return $certificate;
+            }
+            $carryExpireTime = Carbon::createFromTimeString($carryExpireTime);
+            $expireTime = Carbon::createFromTimeString(Arr::get($certificate, 'expire_time'));
+
+            return $carryExpireTime->gt($expireTime) ? $carryExpireTime : $expireTime;
         });
+        if (!$certificate) {
+            throw new SignInvalidException('没有可用的平台证书');
+        }
+        $serialNo = Arr::get($certificate, 'serial_no');
+        $aesKey = $this->app['config']->get('aes_key');
+        $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
+        $cache->set(self::SERIAL_NUMBER_CACHE, $serialNo);
+        $cache->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
+        return $serialNo;
     }
 
     /**
@@ -95,7 +98,7 @@ class Certificate
      */
     private function getPublicKeyCacheKey($serialNo)
     {
-        return self::CERTIFICATE_CACHE_PREFIX.$serialNo;
+        return self::CERTIFICATE_CACHE_PREFIX . $serialNo;
     }
 
     /**
@@ -106,21 +109,25 @@ class Certificate
     public function getPublicKey($serialNo)
     {
         $ttl = Carbon::now()->addHours(12);
-
-        return Cache::remember($this->getPublicKeyCacheKey($serialNo), $ttl, function () use ($serialNo, $ttl) {
-            /** @var Client $certificateClient */
-            $certificateClient = $this->app['certificate'];
-            $certificates = collect(Arr::get($certificateClient->all(), 'data'));
-            $certificate = $certificates->firstWhere('serial_no', '=', $serialNo);
-            if (empty($certificate)) {
-                throw new SignInvalidException('证书序列号不存在于可用的证书列表中');
-            }
-            $aesKey = $this->app['config']->get('aes_key');
-            $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
-            Cache::put(self::SERIAL_NUMBER_CACHE, $serialNo, $ttl);
-
+        /**
+         * @var \Redis $cache
+         */
+        $cache = $this->app->config->get('redisClient');
+        $publicKey = $cache->get($this->getPublicKeyCacheKey($serialNo));
+        if ($publicKey) {
             return $publicKey;
-        });
+        }
+        /** @var Client $certificateClient */
+        $certificateClient = $this->app['certificate'];
+        $certificates = collect(Arr::get($certificateClient->all(), 'data'));
+        $certificate = $certificates->firstWhere('serial_no', '=', $serialNo);
+        if (empty($certificate)) {
+            throw new SignInvalidException('证书序列号不存在于可用的证书列表中');
+        }
+        $aesKey = $this->app['config']->get('aes_key');
+        $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
+        $cache->set(self::SERIAL_NUMBER_CACHE, $serialNo);
+        $cache->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
+        return $publicKey;
     }
-
 }
