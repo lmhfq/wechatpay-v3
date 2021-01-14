@@ -1,17 +1,8 @@
 <?php
 
-/*
- * This file is part of the overtrue/wechat.
- *
- * (c) overtrue <i@overtrue.me>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+namespace Lmh\WeChatPayV3\Kernel\Providers;
 
-namespace  Lmh\WeChatPayV3\Kernel\Providers;
-
-use EasyWeChat\Kernel\Log\LogManager;
+use Lmh\WeChatPayV3\Kernel\LogManager;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -70,7 +61,7 @@ class LogServiceProvider implements ServiceProviderInterface
                 'channels' => [
                     'single' => [
                         'driver' => 'single',
-                        'path' => $app['config']->get('log.file') ?: \sys_get_temp_dir().'/logs/easywechat.log',
+                        'path' => $app['config']->get('log.file') ?: \sys_get_temp_dir() . '/logs/wechat.log',
                         'level' => $app['config']->get('log.level', 'debug'),
                     ],
                 ],

@@ -2,11 +2,11 @@
 
 namespace Lmh\WeChatPayV3\Kernel;
 
+use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Psr7;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
 use Lmh\WeChatPayV3\Kernel\Exceptions\SignInvalidException;
 use Lmh\WeChatPayV3\Kernel\Traits\HasHttpRequests;
 use Lmh\WeChatPayV3\Kernel\Traits\ResponseCastable;
@@ -88,6 +88,9 @@ class BaseClient
 
         // verify sign
         $this->pushMiddleware($this->verifySignMiddleware(), 'verify_sign');
+
+
+        $this->pushMiddleware($this->logMiddleware(), 'log');
 
         // retry
         $this->pushMiddleware($this->retryMiddleware(), 'retry');
@@ -234,5 +237,18 @@ class BaseClient
         }, function () {
             return abs($this->app['config']->get('http.retry_delay', 500));
         });
+    }
+
+
+    /**
+     * Log the request.
+     *
+     * @return \Closure
+     */
+    protected function logMiddleware()
+    {
+        $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
+
+        return Middleware::log($this->app['logger'], $formatter);
     }
 }

@@ -4,6 +4,7 @@ namespace Lmh\WeChatPayV3\Kernel;
 
 use Lmh\WeChatPayV3\Kernel\Providers\ConfigServiceProvider;
 use Lmh\WeChatPayV3\Kernel\Providers\HttpClientServiceProvider;
+use Lmh\WeChatPayV3\Kernel\Providers\LogServiceProvider;
 use Pimple\Container;
 
 /**
@@ -75,11 +76,12 @@ class ServiceContainer extends Container
      *
      * @return array
      */
-    public function getProviders()
+    public function getProviders(): array
     {
         return array_merge([
             ConfigServiceProvider::class,
             HttpClientServiceProvider::class,
+            LogServiceProvider::class,
         ], $this->providers);
     }
 
