@@ -3,25 +3,26 @@
 namespace Lmh\WeChatPayV3\Service;
 
 use Lmh\WeChatPayV3\Kernel\ServiceContainer;
-use Lmh\WeChatPayV3\Service\Bill\Client;
 
 /**
  * Class Application.
  *
- * @property \Lmh\WeChatPayV3\Service\Certificate\Client $certificate
- * @property \Lmh\WeChatPayV3\Service\Notify\Client $notify
- * @property \Lmh\WeChatPayV3\Service\Apply4Sub\SubMerchant\Client $subMerchant
- * @property \Lmh\WeChatPayV3\Service\Merchant\Media\Client $media
- * @property \Lmh\WeChatPayV3\Service\CombineTransaction\Client $combineTransaction
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\Applyment\Client $applyment
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\Order\Client $profitSharingOrder
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\ReturnOrder\Client $profitSharingReturnOrder
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\FinishOrder\Client $profitSharingFinishOrder
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\Subsidy\Client $subsidy
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\Refund\Client $refund
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\Fund\Withdraw\Client $withdraw
- * @property \Lmh\WeChatPayV3\Service\Ecommerce\Fund\Balance\Client $balance
- * @property Client $bill
+ * @property Certificate\Client $certificate
+ * @property Notify\Client $notify
+ * @property Apply4Sub\SubMerchant\Client $subMerchant
+ * @property Merchant\Media\Client $media
+ * @property CombineTransaction\Client $combineTransaction
+ * @property Ecommerce\Applyment\Client $applyment
+ * @property Ecommerce\ProfitSharing\Order\Client $profitSharingOrder
+ * @property Ecommerce\ProfitSharing\ReturnOrder\Client $profitSharingReturnOrder
+ * @property Ecommerce\ProfitSharing\FinishOrder\Client $profitSharingFinishOrder
+ * @property Ecommerce\Subsidy\Client $subsidy
+ * @property Ecommerce\Refund\Client $refund
+ * @property Ecommerce\Fund\Withdraw\Client $withdraw
+ * @property Ecommerce\Fund\Balance\Client $balance
+ * @property Bill\Client $bill
+ * @property Pay\Transaction\Client partnerTransaction
+ * @property Pay\Partner\Transaction\Client transaction
  */
 class Application extends ServiceContainer
 {
@@ -43,5 +44,7 @@ class Application extends ServiceContainer
         Ecommerce\Fund\Withdraw\ServiceProvider::class,
         Ecommerce\Fund\Balance\ServiceProvider::class,
         Bill\ServiceProvider::class,
+        Pay\Transaction\ServiceProvider::class,
+        Pay\Partner\Transaction\ServiceProvider::class,
     ];
 }
