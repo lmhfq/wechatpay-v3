@@ -2,6 +2,8 @@
 
 namespace Lmh\WeChatPayV3\Kernel;
 
+use Closure;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\Promise;
@@ -15,6 +17,7 @@ use Lmh\WeChatPayV3\Kernel\Traits\SignatureGenerator;
 use Lmh\WeChatPayV3\Kernel\Utils\RsaUtil;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 class BaseClient
 {
@@ -36,7 +39,7 @@ class BaseClient
     /**
      * verify the response with certificate
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function certificateMiddleware()
     {
@@ -49,16 +52,13 @@ class BaseClient
      * @param string $url
      * @param string $method
      * @param array $options
-     *
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return array
+     * @throws GuzzleException
+     * @throws Throwable
      */
     protected function request(string $method, string $url, array $options = [])
     {
         $response = $this->requestRaw($method, $url, $options);
-
         return $this->castResponse($response);
     }
 
@@ -67,7 +67,7 @@ class BaseClient
      * @param string $url
      * @param array $options
      * @return ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     protected function requestRaw(string $method, string $url, array $options = [])
     {
@@ -90,7 +90,7 @@ class BaseClient
         $this->pushMiddleware($this->verifySignMiddleware(), 'verify_sign');
 
 
-     //   $this->pushMiddleware($this->logMiddleware(), 'log');
+        //   $this->pushMiddleware($this->logMiddleware(), 'log');
 
         // retry
         $this->pushMiddleware($this->retryMiddleware(), 'retry');
@@ -99,7 +99,7 @@ class BaseClient
     /**
      * Encrypt/Decrypt sensitive param
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function sensitiveParamMiddleware()
     {
@@ -162,7 +162,7 @@ class BaseClient
     /**
      * Attache auth to the request header.
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function authMiddleware()
     {
@@ -183,7 +183,7 @@ class BaseClient
     /**
      * Attache auth to the request header.
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function verifySignMiddleware()
     {
@@ -198,9 +198,8 @@ class BaseClient
                 return $promise->then(
                     function (ResponseInterface $response) {
                         if (!$this->isResponseSignValid($response)) {
-                            throw new SignInvalidException('响应验签失败');
+                            throw new SignInvalidException('响应结果签名验证失败');
                         }
-
                         return $response;
                     }
                 );
@@ -211,7 +210,7 @@ class BaseClient
     /**
      * Return retry middleware.
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function retryMiddleware()
     {
@@ -243,7 +242,7 @@ class BaseClient
     /**
      * Log the request.
      *
-     * @return \Closure
+     * @return Closure
      */
     protected function logMiddleware()
     {

@@ -1,7 +1,11 @@
 <?php
+
 namespace Lmh\WeChatPayV3\Kernel;
 
+use Closure;
+use Exception;
 use InvalidArgumentException;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\FormattableHandlerInterface;
@@ -14,7 +18,10 @@ use Monolog\Handler\SyslogHandler;
 use Monolog\Handler\WhatFailureGroupHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
+use Throwable;
 use function array_merge;
+use function sprintf;
+use function sys_get_temp_dir;
 
 /**
  * Class LogManager.
@@ -24,7 +31,7 @@ use function array_merge;
 class LogManager implements LoggerInterface
 {
     /**
-     * @var \Lmh\WeChatPayV3\Kernel\ServiceContainer
+     * @var ServiceContainer
      */
     protected $app;
 
@@ -69,12 +76,12 @@ class LogManager implements LoggerInterface
     /**
      * Create a new, on-demand aggregate logger instance.
      *
-     * @param  array  $channels
-     * @param  string|null  $channel
+     * @param array $channels
+     * @param string|null $channel
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function stack(array $channels, $channel = null)
     {
@@ -82,118 +89,11 @@ class LogManager implements LoggerInterface
     }
 
     /**
-     * Get a log channel instance.
-     *
-     * @param string|null $channel
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    public function channel($channel = null)
-    {
-        return $this->driver($channel);
-    }
-
-    /**
-     * Get a log driver instance.
-     *
-     * @param string|null $driver
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    public function driver($driver = null)
-    {
-        return $this->get($driver ?? $this->getDefaultDriver());
-    }
-
-    /**
-     * Attempt to get the log from the local cache.
-     *
-     * @param string $name
-     *
-     * @return \Psr\Log\LoggerInterface
-     *
-     * @throws \Exception
-     */
-    protected function get($name)
-    {
-        try {
-            return $this->channels[$name] ?? ($this->channels[$name] = $this->resolve($name));
-        } catch (\Throwable $e) {
-            $logger = $this->createEmergencyLogger();
-
-            $logger->emergency('Unable to create configured logger. Using emergency logger.', [
-                'exception' => $e,
-            ]);
-
-            return $logger;
-        }
-    }
-
-    /**
-     * Resolve the given log instance by name.
-     *
-     * @param string $name
-     *
-     * @return \Psr\Log\LoggerInterface
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function resolve($name)
-    {
-        $config = $this->app['config']->get(\sprintf('log.channels.%s', $name));
-
-        if (is_null($config)) {
-            throw new InvalidArgumentException(\sprintf('Log [%s] is not defined.', $name));
-        }
-
-        if (isset($this->customCreators[$config['driver']])) {
-            return $this->callCustomCreator($config);
-        }
-
-        $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
-
-        if (method_exists($this, $driverMethod)) {
-            return $this->{$driverMethod}($config);
-        }
-
-        throw new InvalidArgumentException(\sprintf('Driver [%s] is not supported.', $config['driver']));
-    }
-
-    /**
-     * Call a custom driver creator.
-     *
-     * @return mixed
-     */
-    protected function callCustomCreator(array $config)
-    {
-        return $this->customCreators[$config['driver']]($this->app, $config);
-    }
-
-    /**
-     * Create an emergency log handler to avoid white screens of death.
-     *
-     * @return \Monolog\Logger
-     *
-     * @throws \Exception
-     */
-    protected function createEmergencyLogger()
-    {
-        return new Monolog('wechatpay-v3', $this->prepareHandlers([new StreamHandler(
-            \sys_get_temp_dir().'/wechatpay-v3/wechat.log',
-            $this->level(['level' => 'debug'])
-        )]));
-    }
-
-    /**
      * Create an aggregate log driver instance.
      *
-     * @return \Monolog\Logger
+     * @return Monolog
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function createStackDriver(array $config)
     {
@@ -211,103 +111,110 @@ class LogManager implements LoggerInterface
     }
 
     /**
-     * Create an instance of the single file log driver.
+     * Get a log channel instance.
      *
-     * @return \Psr\Log\LoggerInterface
+     * @param string|null $channel
      *
-     * @throws \Exception
+     * @return mixed
+     *
+     * @throws Exception
      */
-    protected function createSingleDriver(array $config)
+    public function channel($channel = null)
     {
-        return new Monolog($this->parseChannel($config), [
-            $this->prepareHandler(new StreamHandler(
-                $config['path'],
-                $this->level($config),
-                $config['bubble'] ?? true,
-                $config['permission'] ?? null,
-                $config['locking'] ?? false
-            ), $config),
-        ]);
+        return $this->driver($channel);
     }
 
     /**
-     * Create an instance of the daily file log driver.
+     * Get a log driver instance.
      *
-     * @return \Psr\Log\LoggerInterface
+     * @param string|null $driver
+     *
+     * @return mixed
+     *
+     * @throws Exception
      */
-    protected function createDailyDriver(array $config)
+    public function driver($driver = null)
     {
-        return new Monolog($this->parseChannel($config), [
-            $this->prepareHandler(new RotatingFileHandler(
-                $config['path'],
-                $config['days'] ?? 7,
-                $this->level($config),
-                $config['bubble'] ?? true,
-                $config['permission'] ?? null,
-                $config['locking'] ?? false
-            ), $config),
-        ]);
+        return $this->get($driver ?? $this->getDefaultDriver());
     }
 
     /**
-     * Create an instance of the Slack log driver.
+     * Attempt to get the log from the local cache.
      *
-     * @return \Psr\Log\LoggerInterface
+     * @param string $name
+     *
+     * @return LoggerInterface
+     *
+     * @throws Exception
      */
-    protected function createSlackDriver(array $config)
+    protected function get($name)
     {
-        return new Monolog($this->parseChannel($config), [
-            $this->prepareHandler(new SlackWebhookHandler(
-                $config['url'],
-                $config['channel'] ?? null,
-                $config['username'] ?? 'EasyWeChat',
-                $config['attachment'] ?? true,
-                $config['emoji'] ?? ':boom:',
-                $config['short'] ?? false,
-                $config['context'] ?? true,
-                $this->level($config),
-                $config['bubble'] ?? true,
-                $config['exclude_fields'] ?? []
-            ), $config),
-        ]);
+        try {
+            return $this->channels[$name] ?? ($this->channels[$name] = $this->resolve($name));
+        } catch (Throwable $e) {
+            $logger = $this->createEmergencyLogger();
+
+            $logger->emergency('Unable to create configured logger. Using emergency logger.', [
+                'exception' => $e,
+            ]);
+
+            return $logger;
+        }
     }
 
     /**
-     * Create an instance of the syslog log driver.
+     * Resolve the given log instance by name.
      *
-     * @return \Psr\Log\LoggerInterface
+     * @param string $name
+     *
+     * @return LoggerInterface
+     *
+     * @throws InvalidArgumentException
      */
-    protected function createSyslogDriver(array $config)
+    protected function resolve($name)
     {
-        return new Monolog($this->parseChannel($config), [
-            $this->prepareHandler(new SyslogHandler(
-                'EasyWeChat',
-                $config['facility'] ?? LOG_USER,
-                $this->level($config)
-            ), $config),
-        ]);
+        $config = $this->app['config']->get(sprintf('log.channels.%s', $name));
+
+        if (is_null($config)) {
+            throw new InvalidArgumentException(sprintf('Log [%s] is not defined.', $name));
+        }
+
+        if (isset($this->customCreators[$config['driver']])) {
+            return $this->callCustomCreator($config);
+        }
+
+        $driverMethod = 'create' . ucfirst($config['driver']) . 'Driver';
+
+        if (method_exists($this, $driverMethod)) {
+            return $this->{$driverMethod}($config);
+        }
+
+        throw new InvalidArgumentException(sprintf('Driver [%s] is not supported.', $config['driver']));
     }
 
     /**
-     * Create an instance of the "error log" log driver.
+     * Call a custom driver creator.
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return mixed
      */
-    protected function createErrorlogDriver(array $config)
+    protected function callCustomCreator(array $config)
     {
-        return new Monolog($this->parseChannel($config), [
-            $this->prepareHandler(
-                new ErrorLogHandler(
-                    $config['type'] ?? ErrorLogHandler::OPERATING_SYSTEM,
-                    $this->level($config)
-                )
-            ),
-        ]);
+        return $this->customCreators[$config['driver']]($this->app, $config);
     }
 
-    protected function createNullDriver()
+    /**
+     * Create an emergency log handler to avoid white screens of death.
+     *
+     * @return Monolog
+     *
+     * @throws Exception
+     */
+    protected function createEmergencyLogger()
     {
-        return new Monolog('EasyWeChat', [new NullHandler()]);
+        return new Monolog('wechatpay-v3', $this->prepareHandlers([new StreamHandler(
+            sys_get_temp_dir() . '/wechatpay-v3/wechat.log',
+            $this->level(['level' => 'debug'])
+        )]));
     }
 
     /**
@@ -327,7 +234,7 @@ class LogManager implements LoggerInterface
     /**
      * Prepare the handler for usage by Monolog.
      *
-     * @return \Monolog\Handler\HandlerInterface
+     * @return HandlerInterface
      */
     protected function prepareHandler(HandlerInterface $handler, array $config = [])
     {
@@ -343,7 +250,7 @@ class LogManager implements LoggerInterface
     /**
      * Get a Monolog formatter instance.
      *
-     * @return \Monolog\Formatter\FormatterInterface
+     * @return FormatterInterface
      */
     protected function formatter()
     {
@@ -351,16 +258,6 @@ class LogManager implements LoggerInterface
         $formatter->includeStacktraces();
 
         return $formatter;
-    }
-
-    /**
-     * Extract the log channel from the given configuration.
-     *
-     * @return string
-     */
-    protected function parseChannel(array $config)
-    {
-        return $config['name'] ?? 'EasyWeChat';
     }
 
     /**
@@ -392,6 +289,16 @@ class LogManager implements LoggerInterface
     }
 
     /**
+     * Extract the log channel from the given configuration.
+     *
+     * @return string
+     */
+    protected function parseChannel(array $config)
+    {
+        return $config['name'] ?? 'EasyWeChat';
+    }
+
+    /**
      * Set the default log driver name.
      *
      * @param string $name
@@ -408,7 +315,7 @@ class LogManager implements LoggerInterface
      *
      * @return $this
      */
-    public function extend($driver, \Closure $callback)
+    public function extend($driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback->bindTo($this, $this);
 
@@ -422,7 +329,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function emergency($message, array $context = [])
     {
@@ -439,7 +346,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function alert($message, array $context = [])
     {
@@ -455,7 +362,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function critical($message, array $context = [])
     {
@@ -470,7 +377,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function error($message, array $context = [])
     {
@@ -487,7 +394,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function warning($message, array $context = [])
     {
@@ -501,7 +408,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function notice($message, array $context = [])
     {
@@ -517,7 +424,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function info($message, array $context = [])
     {
@@ -531,7 +438,7 @@ class LogManager implements LoggerInterface
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function debug($message, array $context = [])
     {
@@ -541,12 +448,12 @@ class LogManager implements LoggerInterface
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed  $level
+     * @param mixed $level
      * @param string $message
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function log($level, $message, array $context = [])
     {
@@ -557,14 +464,114 @@ class LogManager implements LoggerInterface
      * Dynamically call the default driver instance.
      *
      * @param string $method
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function __call($method, $parameters)
     {
         return $this->driver()->$method(...$parameters);
+    }
+
+    /**
+     * Create an instance of the single file log driver.
+     *
+     * @return LoggerInterface
+     *
+     * @throws Exception
+     */
+    protected function createSingleDriver(array $config)
+    {
+        return new Monolog($this->parseChannel($config), [
+            $this->prepareHandler(new StreamHandler(
+                $config['path'],
+                $this->level($config),
+                $config['bubble'] ?? true,
+                $config['permission'] ?? null,
+                $config['locking'] ?? false
+            ), $config),
+        ]);
+    }
+
+    /**
+     * Create an instance of the daily file log driver.
+     *
+     * @return LoggerInterface
+     */
+    protected function createDailyDriver(array $config)
+    {
+        return new Monolog($this->parseChannel($config), [
+            $this->prepareHandler(new RotatingFileHandler(
+                $config['path'],
+                $config['days'] ?? 7,
+                $this->level($config),
+                $config['bubble'] ?? true,
+                $config['permission'] ?? null,
+                $config['locking'] ?? false
+            ), $config),
+        ]);
+    }
+
+    /**
+     * Create an instance of the Slack log driver.
+     *
+     * @return LoggerInterface
+     */
+    protected function createSlackDriver(array $config)
+    {
+        return new Monolog($this->parseChannel($config), [
+            $this->prepareHandler(new SlackWebhookHandler(
+                $config['url'],
+                $config['channel'] ?? null,
+                $config['username'] ?? 'EasyWeChat',
+                $config['attachment'] ?? true,
+                $config['emoji'] ?? ':boom:',
+                $config['short'] ?? false,
+                $config['context'] ?? true,
+                $this->level($config),
+                $config['bubble'] ?? true,
+                $config['exclude_fields'] ?? []
+            ), $config),
+        ]);
+    }
+
+    /**
+     * Create an instance of the syslog log driver.
+     *
+     * @return LoggerInterface
+     */
+    protected function createSyslogDriver(array $config)
+    {
+        return new Monolog($this->parseChannel($config), [
+            $this->prepareHandler(new SyslogHandler(
+                'EasyWeChat',
+                $config['facility'] ?? LOG_USER,
+                $this->level($config)
+            ), $config),
+        ]);
+    }
+
+    /**
+     * Create an instance of the "error log" log driver.
+     *
+     * @return LoggerInterface
+     */
+    protected function createErrorlogDriver(array $config)
+    {
+        return new Monolog($this->parseChannel($config), [
+            $this->prepareHandler(
+                new ErrorLogHandler(
+                    $config['type'] ?? ErrorLogHandler::OPERATING_SYSTEM,
+                    $this->level($config)
+                )
+            ),
+        ]);
+    }
+
+    protected function createNullDriver()
+    {
+        return new Monolog('EasyWeChat', [new NullHandler()]);
     }
 }

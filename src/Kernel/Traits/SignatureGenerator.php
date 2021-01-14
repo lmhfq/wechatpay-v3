@@ -22,7 +22,7 @@ trait SignatureGenerator
     protected function authHeader(RequestInterface $request, array $options)
     {
         $uri = $request->getUri()->getPath();
-        $request->getUri()->getQuery() && $uri .= ('?'.$request->getUri()->getQuery());
+        $request->getUri()->getQuery() && $uri .= ('?' . $request->getUri()->getQuery());
         $payload = [
             'method' => strtoupper($request->getMethod()),
             'uri' => $uri,
@@ -55,8 +55,8 @@ trait SignatureGenerator
      */
     public function sign(array $payload)
     {
-        $signData = implode("\n", $payload)."\n"; 
-        $clientKey =  $this->app->config->get('private_key');
+        $signData = implode("\n", $payload) . "\n";
+        $clientKey = $this->app->config->get('private_key');
         openssl_sign($signData, $sign, $clientKey, OPENSSL_ALGO_SHA256);
 
         return base64_encode($sign);
@@ -71,31 +71,23 @@ trait SignatureGenerator
      */
     protected function isResponseSignValid(ResponseInterface $response)
     {
+        $response->getBody()->rewind();
         $headers = $response->getHeaders();
         $payload = [
             'timestamp' => Arr::get($headers, 'Wechatpay-Timestamp.0'),
             'nonce_str' => Arr::get($headers, 'Wechatpay-Nonce.0'),
             'body' => $response->getBody()->getContents(),
         ];
-        $response->getBody()->rewind();
-
-        $signData = implode("\n", $payload)."\n";
+        $signData = implode("\n", $payload) . "\n";
         $responseSign = base64_decode(Arr::get($headers, 'Wechatpay-Signature.0'));
         $serialNo = Arr::get($headers, 'Wechatpay-Serial.0');
         if (empty($serialNo)) {
             if (substr(strval($response->getStatusCode()), 0, 1) == '2') {
                 throw new SignInvalidException('响应中不存在证书序列号');
             }
-
             return true;
         }
         $publicKey = (new Certificate($this->app))->getPublicKey($serialNo);
-
-        return boolval(openssl_verify(
-            $signData,
-            $responseSign,
-            $publicKey,
-            OPENSSL_ALGO_SHA256
-        ));
+        return boolval(openssl_verify($signData, $responseSign, $publicKey, OPENSSL_ALGO_SHA256));
     }
 }

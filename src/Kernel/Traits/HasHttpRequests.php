@@ -4,9 +4,11 @@ namespace Lmh\WeChatPayV3\Kernel\Traits;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
+use function GuzzleHttp\choose_handler;
 
 trait HasHttpRequests
 {
@@ -20,7 +22,7 @@ trait HasHttpRequests
         ],
     ];
     /**
-     * @var \GuzzleHttp\ClientInterface
+     * @var ClientInterface
      */
     protected $httpClient;
     /**
@@ -28,7 +30,7 @@ trait HasHttpRequests
      */
     protected $middlewares = [];
     /**
-     * @var \GuzzleHttp\HandlerStack
+     * @var HandlerStack
      */
     protected $handlerStack;
 
@@ -89,9 +91,9 @@ trait HasHttpRequests
      * @param array $options
      *
      * @return ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public function request($url, $method = 'GET', $options = []): ResponseInterface
+    public function request($url, $method = 'GET', $options = [])
     {
         $method = strtoupper($method);
 
@@ -112,7 +114,7 @@ trait HasHttpRequests
     /**
      * Build a handler stack.
      *
-     * @return \GuzzleHttp\HandlerStack
+     * @return HandlerStack
      */
     public function getHandlerStack(): HandlerStack
     {
@@ -130,7 +132,7 @@ trait HasHttpRequests
     }
 
     /**
-     * @param \GuzzleHttp\HandlerStack $handlerStack
+     * @param HandlerStack $handlerStack
      *
      * @return $this
      */
@@ -159,7 +161,7 @@ trait HasHttpRequests
                 : $handler;
         }
 
-        return \GuzzleHttp\choose_handler();
+        return choose_handler();
     }
 
     /**
@@ -182,7 +184,7 @@ trait HasHttpRequests
     /**
      * Set GuzzleHttp\Client.
      *
-     * @param \GuzzleHttp\ClientInterface $httpClient
+     * @param ClientInterface $httpClient
      *
      * @return $this
      */

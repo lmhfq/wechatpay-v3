@@ -21,7 +21,7 @@ class Client extends BaseClient
      * @param string $id
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -33,7 +33,7 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */

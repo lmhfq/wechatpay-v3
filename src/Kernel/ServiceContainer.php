@@ -47,6 +47,20 @@ class ServiceContainer extends Container
     }
 
     /**
+     * Return all providers.
+     *
+     * @return array
+     */
+    public function getProviders(): array
+    {
+        return array_merge([
+            ConfigServiceProvider::class,
+            HttpClientServiceProvider::class,
+            LogServiceProvider::class,
+        ], $this->providers);
+    }
+
+    /**
      * @return array
      */
     public function getConfig()
@@ -69,20 +83,6 @@ class ServiceContainer extends Container
             'redisClient' => null
         ];
         return array_replace_recursive($base, $this->defaultConfig, $this->userConfig);
-    }
-
-    /**
-     * Return all providers.
-     *
-     * @return array
-     */
-    public function getProviders(): array
-    {
-        return array_merge([
-            ConfigServiceProvider::class,
-            HttpClientServiceProvider::class,
-            LogServiceProvider::class,
-        ], $this->providers);
     }
 
     /**

@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace  Lmh\WeChatPayV3\Kernel\Providers;
+namespace Lmh\WeChatPayV3\Kernel\Providers;
 
-use  Lmh\WeChatPayV3\Kernel\Config;
+use Lmh\WeChatPayV3\Kernel\Config;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

@@ -18,10 +18,10 @@ use Throwable;
 class Certificate
 {
     const CERTIFICATE_CACHE_PREFIX = 'openpay-wechatpay-v3.kernel.certificate.';
-    const SERIAL_NUMBER_CACHE = 'openpay-wechatpay-v3.kernel.serial-no';
+    const SERIAL_NUMBER_CACHE = 'openpay-wechatpay-v3.kernel.serial-no.';
 
     /**
-     * @var \Pimple\Container
+     * @var Container
      */
     protected $app;
 
@@ -45,13 +45,14 @@ class Certificate
      */
     public function getAvailableSerialNo()
     {
-        $ttl = Carbon::now()->addHours(12);
+        $ttl = 12 * 3600;
         /**
          * @var Redis $cache
          */
         $client = $this->app->config->get('redisClient');
+        $mchId = $this->app->config['mch_id'];
         if ($client != null && $client instanceof Redis) {
-            $serialNo = $client->get(self::SERIAL_NUMBER_CACHE);
+            $serialNo = $client->get($this->getSerialNoCacheKey($mchId) . $mchId);
             if ($serialNo) {
                 return $serialNo;
             }
@@ -78,10 +79,19 @@ class Certificate
         $aesKey = $this->app['config']->get('aes_key');
         $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
         if ($client != null && $client instanceof Redis) {
-            $client->set(self::SERIAL_NUMBER_CACHE, $serialNo);
+            $client->set($this->getSerialNoCacheKey($mchId), $serialNo);
             $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
         }
         return $serialNo;
+    }
+
+    /**
+     * @param $mchId
+     * @return string
+     */
+    private function getSerialNoCacheKey($mchId)
+    {
+        return self::SERIAL_NUMBER_CACHE . $mchId;
     }
 
     /**
@@ -121,11 +131,12 @@ class Certificate
      */
     public function getPublicKey($serialNo)
     {
-        $ttl = Carbon::now()->addHours(12);
+        $ttl = 12 * 3600;
         /**
          * @var Redis $cache
          */
         $client = $this->app->config->get('redisClient');
+        $mchId = $this->app->config['mch_id'];
         if ($client != null && $client instanceof Redis) {
             $publicKey = $client->get($this->getPublicKeyCacheKey($serialNo));
             if ($publicKey) {
@@ -139,10 +150,10 @@ class Certificate
         if (empty($certificate)) {
             throw new SignInvalidException('证书序列号不存在于可用的证书列表中');
         }
-        $aesKey =  $this->app->config->get('aes_key');
+        $aesKey = $this->app->config->get('aes_key');
         $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
         if ($client != null && $client instanceof Redis) {
-            $client->set(self::SERIAL_NUMBER_CACHE, $serialNo);
+            $client->set($this->getSerialNoCacheKey($mchId), $serialNo);
             $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
         }
         return $publicKey;

@@ -5,6 +5,7 @@ namespace Lmh\WeChatPayV3\Kernel\Providers;
 use Lmh\WeChatPayV3\Kernel\LogManager;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use function sys_get_temp_dir;
 
 /**
  * Class LoggingServiceProvider.
@@ -61,7 +62,7 @@ class LogServiceProvider implements ServiceProviderInterface
                 'channels' => [
                     'single' => [
                         'driver' => 'single',
-                        'path' => $app['config']->get('log.file') ?: \sys_get_temp_dir() . '/logs/wechat.log',
+                        'path' => $app['config']->get('log.file') ?: sys_get_temp_dir() . '/logs/wechat.log',
                         'level' => $app['config']->get('log.level', 'debug'),
                     ],
                 ],

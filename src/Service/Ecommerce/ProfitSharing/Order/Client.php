@@ -4,7 +4,6 @@ namespace Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\Order;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
@@ -15,11 +14,11 @@ class Client extends BaseClient
     /**
      * @param array|null $query
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function retrieveByOrder(array $query = null, array $options = []): ResponseInterface
+    public function retrieveByOrder(array $query = null, array $options = [])
     {
         $url = self::classUrl();
         $opts = $options + ['query' => $query];
@@ -30,7 +29,7 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */

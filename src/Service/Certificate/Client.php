@@ -2,6 +2,7 @@
 
 namespace Lmh\WeChatPayV3\Service\Certificate;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 
 /**
@@ -9,6 +10,13 @@ use Lmh\WeChatPayV3\Kernel\BaseClient;
  */
 class Client extends BaseClient
 {
+    /**
+     * @param null $query
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws \Throwable
+     */
     public function all($query = null, array $options = [])
     {
         $url = rtrim(self::classUrl(), '/');
@@ -16,6 +24,9 @@ class Client extends BaseClient
         return $this->request('GET', $url, $options);
     }
 
+    /**
+     *
+     */
     protected function registerHttpMiddleware()
     {
         // auth

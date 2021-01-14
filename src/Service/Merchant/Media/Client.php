@@ -4,7 +4,6 @@ namespace Lmh\WeChatPayV3\Service\Merchant\Media;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
@@ -17,7 +16,7 @@ class Client extends BaseClient
      * @param $content
      * @param $mimeType
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws Throwable
      * @throws GuzzleException
      */
@@ -45,10 +44,8 @@ class Client extends BaseClient
                 ],
             ],
         ];
-
         $url = self::classUrl() . 'upload';
         $opts = $options + ['multipart' => $multipart, 'sign_payload' => $signPayload];
-
         return $this->request('POST', $url, $opts);
     }
 

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace  Lmh\WeChatPayV3\Kernel\Providers;
+namespace Lmh\WeChatPayV3\Kernel\Providers;
 
 use GuzzleHttp\Client;
 use Pimple\Container;

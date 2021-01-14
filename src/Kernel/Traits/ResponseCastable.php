@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 trait ResponseCastable
 {
     /**
-     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param ResponseInterface $response
      *
      * @return array
      */
@@ -16,13 +16,10 @@ trait ResponseCastable
         $response->getBody()->rewind();
         $contents = $response->getBody()->getContents();
         $response->getBody()->rewind();
-
         $array = json_decode($contents, true, 512, JSON_BIGINT_AS_STRING);
-
         if (JSON_ERROR_NONE === json_last_error()) {
             return (array)$array;
         }
-
         return [];
     }
 }

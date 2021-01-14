@@ -5,7 +5,6 @@ namespace Lmh\WeChatPayV3\Service\CombineTransaction;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
@@ -21,7 +20,7 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -34,7 +33,7 @@ class Client extends BaseClient
      * @param string $channel 值仅可为 app 或 jsapi
      * @param array $params
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -49,7 +48,7 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -62,7 +61,7 @@ class Client extends BaseClient
      * @param string $outTradeNo
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -78,7 +77,7 @@ class Client extends BaseClient
      * @param string $outTradeNo
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -94,6 +93,7 @@ class Client extends BaseClient
      * @param $appId
      * @param $timestamp
      * @param $prepayId
+     * @return array
      */
     public function generateAppPayInfo($appId, $timestamp, $prepayId, $subMerchantId)
     {
@@ -118,7 +118,7 @@ class Client extends BaseClient
      * @param $prepayId
      * @return array
      */
-    public function generateJsApiPayInfo($appId, $timestamp, $prepayId)
+    public function generateJsApiPayInfo($appId, $timestamp, $prepayId): array
     {
         $payload = [
             'appId' => $appId,

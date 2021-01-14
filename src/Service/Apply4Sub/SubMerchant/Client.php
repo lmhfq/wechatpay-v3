@@ -4,7 +4,6 @@ namespace Lmh\WeChatPayV3\Service\Apply4Sub\SubMerchant;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
@@ -17,7 +16,7 @@ class Client extends BaseClient
      * @param string $subMerchantId
      * @param null $query
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -33,7 +32,7 @@ class Client extends BaseClient
      * @param string $subMerchantId
      * @param array $params
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
