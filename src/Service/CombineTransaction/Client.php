@@ -2,8 +2,11 @@
 
 namespace Lmh\WeChatPayV3\Service\CombineTransaction;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 /**
  * Class Client.
@@ -18,9 +21,9 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return mixed|ResponseInterface
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function createByApp(array $params, array $options = [])
     {
@@ -31,9 +34,9 @@ class Client extends BaseClient
      * @param string $channel 值仅可为 app 或 jsapi
      * @param array $params
      * @param array $options
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return mixed|ResponseInterface
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function createByChannel(string $channel, array $params, array $options = [])
     {
@@ -46,9 +49,9 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return mixed|ResponseInterface
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function createByJsApi(array $params, array $options = [])
     {
@@ -56,12 +59,12 @@ class Client extends BaseClient
     }
 
     /**
-     * @param string $outRefundNo
+     * @param string $outTradeNo
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return mixed|ResponseInterface
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function retrieveByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
     {
@@ -75,9 +78,9 @@ class Client extends BaseClient
      * @param string $outTradeNo
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Throwable
+     * @return mixed|ResponseInterface
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function closeByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
     {
@@ -113,6 +116,7 @@ class Client extends BaseClient
      * @param $appId
      * @param $timestamp
      * @param $prepayId
+     * @return array
      */
     public function generateJsApiPayInfo($appId, $timestamp, $prepayId)
     {

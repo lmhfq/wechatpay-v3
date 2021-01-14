@@ -10,12 +10,42 @@ declare(strict_types=1);
 namespace Lmh\WeChatPayV3\Service\Pay\Partner\Transaction;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Psr\Http\Message\ResponseInterface;
 
 class Client extends BaseClient
 {
     public static function className()
     {
         return 'pay/partner/transactions';
+    }
+
+    /**
+     * @param array $params
+     * @param array $options
+     * @return ResponseInterface
+     * @throws GuzzleException
+     * @throws \Throwable
+     */
+    public function jsApi(array $params, array $options = []): ResponseInterface
+    {
+        $url = self::classUrl() . 'jsapi';
+        $options = $options + ['json' => $params];
+        return $this->request('POST', $url, $options);
+    }
+
+    /**
+     * @param array $params
+     * @param array $options
+     * @return ResponseInterface
+     * @throws GuzzleException
+     * @throws \Throwable
+     */
+    public function h5(array $params, array $options = []): ResponseInterface
+    {
+        $url = self::classUrl() . 'h5';
+        $options = $options + ['json' => $params];
+        return $this->request('POST', $url, $options);
     }
 }
