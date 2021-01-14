@@ -51,7 +51,7 @@ class Certificate
          */
         $client = $this->app->config->get('redisClient');
         if ($client != null && $client instanceof Redis) {
-            $serialNo = $cache->get(self::SERIAL_NUMBER_CACHE);
+            $serialNo = $client->get(self::SERIAL_NUMBER_CACHE);
             if ($serialNo) {
                 return $serialNo;
             }
