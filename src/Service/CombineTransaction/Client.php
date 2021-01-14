@@ -25,7 +25,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function createByApp(array $params, array $options = [])
+    public function app(array $params, array $options = [])
     {
         return $this->createByChannel('app', $params, $options);
     }
@@ -53,7 +53,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function createByJsApi(array $params, array $options = [])
+    public function jsapi(array $params, array $options = [])
     {
         return $this->createByChannel('jsapi', $params, $options);
     }

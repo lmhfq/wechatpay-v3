@@ -16,11 +16,10 @@ use Pimple\ServiceProviderInterface;
 class ServiceProvider implements ServiceProviderInterface
 {
 
-    public function register(Container $pimple)
+    public function register(Container $app)
     {
         $app['partnerTransaction'] = function ($app) {
             return new Client($app);
         };
     }
-
 }

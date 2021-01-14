@@ -28,7 +28,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws \Throwable
      */
-    public function jsApi(array $params, array $options = []): ResponseInterface
+    public function jsapi(array $params, array $options = []): ResponseInterface
     {
         $url = self::classUrl() . 'jsapi';
         $options = $options + ['json' => $params];
