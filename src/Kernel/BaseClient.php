@@ -90,7 +90,7 @@ class BaseClient
         $this->pushMiddleware($this->verifySignMiddleware(), 'verify_sign');
 
 
-        $this->pushMiddleware($this->logMiddleware(), 'log');
+     //   $this->pushMiddleware($this->logMiddleware(), 'log');
 
         // retry
         $this->pushMiddleware($this->retryMiddleware(), 'retry');

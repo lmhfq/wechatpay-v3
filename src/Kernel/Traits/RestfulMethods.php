@@ -8,24 +8,9 @@ use Throwable;
 
 trait RestfulMethods
 {
-    /**
-     * @param string|array|null $query
-     * @param array $options
-     * @return mixed|ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws Throwable
-     */
-    protected function all($query = null, array $options = [])
-    {
-        $url = self::classUrl();
-        $opts = $options + ['query' => $query];
-
-        return $this->request('GET', $url, $opts);
-    }
-
     public static function classUrl()
     {
-        return '/v3/' . static::className();
+        return '/v3/' . static::className() . '/';
     }
 
     public static function className()

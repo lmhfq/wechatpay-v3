@@ -11,7 +11,9 @@ class Client extends BaseClient
 {
     public function all($query = null, array $options = [])
     {
-        return parent::all($query, $options);
+        $url = rtrim(self::classUrl(), '/');
+        $options = $options + ['query' => $query];
+        return $this->request('GET', $url, $options);
     }
 
     protected function registerHttpMiddleware()
