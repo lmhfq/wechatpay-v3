@@ -2,6 +2,7 @@
 
 namespace Lmh\WeChatPayV3\Kernel;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Lmh\WeChatPayV3\Kernel\Exceptions\DecryptException;
@@ -11,6 +12,8 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\SignInvalidException;
 use Lmh\WeChatPayV3\Kernel\Utils\AesUtil;
 use Lmh\WeChatPayV3\Service\Certificate\Client;
 use Pimple\Container;
+use Redis;
+use Throwable;
 
 class Certificate
 {
@@ -32,18 +35,26 @@ class Certificate
     }
 
     /**
-     * @return mixed
+     * @return mixed|string
+     * @throws DecryptException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws SignInvalidException
+     * @throws GuzzleException
+     * @throws Throwable
      */
     public function getAvailableSerialNo()
     {
         $ttl = Carbon::now()->addHours(12);
         /**
-         * @var \Redis $cache
+         * @var Redis $cache
          */
-        $cache = $this->app->config->get('redisClient');
-        $serialNo = $cache->get(self::SERIAL_NUMBER_CACHE);
-        if ($serialNo) {
-            return $serialNo;
+        $client = $this->app->config->get('redisClient');
+        if ($client != null && $client instanceof Redis) {
+            $serialNo = $cache->get(self::SERIAL_NUMBER_CACHE);
+            if ($serialNo) {
+                return $serialNo;
+            }
         }
         /** @var Client $certificateClient */
         $certificateClient = $this->app['certificate'];
@@ -66,8 +77,10 @@ class Certificate
         $serialNo = Arr::get($certificate, 'serial_no');
         $aesKey = $this->app['config']->get('aes_key');
         $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
-        $cache->set(self::SERIAL_NUMBER_CACHE, $serialNo);
-        $cache->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
+        if ($client != null && $client instanceof Redis) {
+            $client->set(self::SERIAL_NUMBER_CACHE, $serialNo);
+            $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
+        }
         return $serialNo;
     }
 
@@ -110,12 +123,14 @@ class Certificate
     {
         $ttl = Carbon::now()->addHours(12);
         /**
-         * @var \Redis $cache
+         * @var Redis $cache
          */
-        $cache = $this->app->config->get('redisClient');
-        $publicKey = $cache->get($this->getPublicKeyCacheKey($serialNo));
-        if ($publicKey) {
-            return $publicKey;
+        $client = $this->app->config->get('redisClient');
+        if ($client != null && $client instanceof Redis) {
+            $publicKey = $client->get($this->getPublicKeyCacheKey($serialNo));
+            if ($publicKey) {
+                return $publicKey;
+            }
         }
         /** @var Client $certificateClient */
         $certificateClient = $this->app['certificate'];
@@ -124,10 +139,12 @@ class Certificate
         if (empty($certificate)) {
             throw new SignInvalidException('证书序列号不存在于可用的证书列表中');
         }
-        $aesKey = $this->app['config']->get('aes_key');
+        $aesKey =  $this->app->config->get('aes_key');
         $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
-        $cache->set(self::SERIAL_NUMBER_CACHE, $serialNo);
-        $cache->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
+        if ($client != null && $client instanceof Redis) {
+            $client->set(self::SERIAL_NUMBER_CACHE, $serialNo);
+            $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
+        }
         return $publicKey;
     }
 }
