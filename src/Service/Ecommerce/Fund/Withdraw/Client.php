@@ -25,7 +25,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function retrieve(string $id, $query = null, array $options = [])
+    public function retrieve(string $id, $query = null, array $options = []): ResponseInterface
     {
         return parent::retrieve($id, $query, $options);
     }
