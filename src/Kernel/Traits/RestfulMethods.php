@@ -24,12 +24,12 @@ trait RestfulMethods
 
     public function instanceUrl($id)
     {
-        return self::classUrl() . $id;
+        return self::classUrl() . '/' . $id;
     }
 
     public static function classUrl()
     {
-        return '/v3/' . static::className() . '/';
+        return '/v3/' . static::className();
     }
 
     public static function className()
@@ -39,7 +39,7 @@ trait RestfulMethods
         $classes = array_slice($classes, 3, -1);
         foreach ($classes as $key => $val) {
             $classes[$key] = $key == count($classes) - 1 ? Str::plural(Str::snake($val)) : strtolower($val);
-        }
+        }   
         return implode('/', $classes);
     }
 
@@ -52,6 +52,7 @@ trait RestfulMethods
     protected function create(array $params, array $options = [])
     {
         $url = self::classUrl();
+
         $opts = $options + ['json' => $params];
 
         return $this->request('POST', $url, $opts);

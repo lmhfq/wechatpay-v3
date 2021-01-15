@@ -21,7 +21,7 @@ class Client extends BaseClient
      */
     public function create(array $params, array $options = [])
     {
-        $url = self::classUrl() . 'create';
+        $url = self::classUrl() . '/create';
         $opts = $options + ['json' => $params];
 
         return $this->request('POST', $url, $opts);
@@ -36,7 +36,7 @@ class Client extends BaseClient
      */
     public function return(array $params, array $options = [])
     {
-        $url = self::classUrl() . 'return';
+        $url = self::classUrl() . '/return';
         $opts = $options + ['json' => $params];
 
         return $this->request('POST', $url, $opts);
@@ -51,7 +51,7 @@ class Client extends BaseClient
      */
     public function cancel(array $params, array $options = [])
     {
-        $url = self::classUrl() . 'cancel';
+        $url = self::classUrl() . '/cancel';
         $opts = $options + ['json' => $params];
 
         return $this->request('POST', $url, $opts);

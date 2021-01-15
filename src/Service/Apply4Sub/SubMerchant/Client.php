@@ -22,7 +22,7 @@ class Client extends BaseClient
      */
     public function retrieveSettlement(string $subMerchantId, $query = null, array $options = [])
     {
-        $url = self::classUrl() . $subMerchantId . '/settlement';
+        $url = self::classUrl() . '/' . $subMerchantId . '/settlement';
         $opts = $options + ['query' => $query];
 
         return $this->request('GET', $url, $opts);
@@ -38,7 +38,7 @@ class Client extends BaseClient
      */
     public function updateSettlement(string $subMerchantId, array $params, array $options = [])
     {
-        $url = self::classUrl() . $subMerchantId . '/modify-settlement';
+        $url = self::classUrl() . '/' . $subMerchantId . '/modify-settlement';
         $opts = $options + ['json' => $params];
 
         return $this->request('POST', $url, $opts);

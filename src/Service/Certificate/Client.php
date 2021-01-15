@@ -19,7 +19,7 @@ class Client extends BaseClient
      */
     public function all($query = null, array $options = [])
     {
-        $url = rtrim(self::classUrl(), '/');
+        $url = self::classUrl();
         $options = $options + ['query' => $query];
         return $this->request('GET', $url, $options);
     }

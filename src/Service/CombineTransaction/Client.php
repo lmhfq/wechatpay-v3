@@ -39,7 +39,7 @@ class Client extends BaseClient
      */
     public function createByChannel(string $channel, array $params, array $options = [])
     {
-        $url = self::classUrl() . $channel;
+        $url = self::classUrl() . '/' . $channel;
         $opts = $options + ['json' => $params];
 
         return $this->request('POST', $url, $opts);
@@ -67,7 +67,7 @@ class Client extends BaseClient
      */
     public function retrieveByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
     {
-        $url = self::classUrl() . 'out-trade-no/' . $outTradeNo;
+        $url = self::classUrl() . '/out-trade-no/' . $outTradeNo;
         $opts = $options + ['query' => $query];
 
         return $this->request('GET', $url, $opts);
@@ -83,7 +83,7 @@ class Client extends BaseClient
      */
     public function closeByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
     {
-        $url = self::classUrl() . 'out-trade-no/' . $outTradeNo . '/close';
+        $url = self::classUrl() . '/out-trade-no/' . $outTradeNo . '/close';
         $opts = $options + ['query' => $query];
 
         return $this->request('POST', $url, $opts);
@@ -95,7 +95,7 @@ class Client extends BaseClient
      * @param $prepayId
      * @return array
      */
-    public function generateAppPayInfo($appId, $timestamp, $prepayId, $subMerchantId)
+    public function appPayInfo($appId, $timestamp, $prepayId, $subMerchantId)
     {
         $payload = [
             'appId' => $appId,
@@ -118,7 +118,7 @@ class Client extends BaseClient
      * @param $prepayId
      * @return array
      */
-    public function generateJsApiPayInfo($appId, $timestamp, $prepayId): array
+    public function jsApiPayInfo($appId, $timestamp, $prepayId): array
     {
         $payload = [
             'appId' => $appId,

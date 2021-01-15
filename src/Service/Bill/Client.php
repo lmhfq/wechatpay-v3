@@ -29,7 +29,7 @@ class Client extends BaseClient
      */
     public function retrieveTradeBill($query = null, array $options = [])
     {
-        $url = self::classUrl() . 'tradebill';
+        $url = self::classUrl() . '/tradebill';
         $opts = $options + ['query' => $query];
 
         return $this->request('GET', $url, $opts);

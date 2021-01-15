@@ -44,7 +44,7 @@ class Client extends BaseClient
                 ],
             ],
         ];
-        $url = self::classUrl() . 'upload';
+        $url = self::classUrl() . '/upload';
         $opts = $options + ['multipart' => $multipart, 'sign_payload' => $signPayload];
         return $this->request('POST', $url, $opts);
     }
