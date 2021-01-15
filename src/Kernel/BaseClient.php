@@ -4,11 +4,13 @@ namespace Lmh\WeChatPayV3\Kernel;
 
 use Closure;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Psr7;
 use Illuminate\Support\Arr;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\SignInvalidException;
 use Lmh\WeChatPayV3\Kernel\Traits\HasHttpRequests;
 use Lmh\WeChatPayV3\Kernel\Traits\ResponseCastable;
@@ -54,11 +56,17 @@ class BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
+     * @throws ResultException
      * @throws Throwable
      */
     protected function request(string $method, string $url, array $options = [])
     {
-        $response = $this->requestRaw($method, $url, $options);
+        try {
+            $response = $this->requestRaw($method, $url, $options);
+        } catch (RequestException $exception) {
+            $result = $this->castResponse($exception->getResponse());
+            throw new ResultException($result['message'], $result['code']);
+        }
         return $this->castResponse($response);
     }
 

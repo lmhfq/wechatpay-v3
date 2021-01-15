@@ -3,6 +3,7 @@
 namespace Lmh\WeChatPayV3\Kernel\Traits;
 
 use Illuminate\Support\Str;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Throwable;
 
 trait RestfulMethods
@@ -46,8 +47,8 @@ trait RestfulMethods
     /**
      * @param array $params
      * @param array $options
+     * @throws ResultException
      * @return array
-     * @throws Throwable
      */
     protected function create(array $params, array $options = [])
     {
