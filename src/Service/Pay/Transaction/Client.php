@@ -13,6 +13,7 @@ namespace Lmh\WeChatPayV3\Service\Pay\Transaction;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Throwable;
 
 class Client extends BaseClient
@@ -41,6 +42,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
+     * @throws ResultException
      * @throws Throwable
      */
     public function h5(array $params, array $options = [])
