@@ -5,6 +5,7 @@ namespace Lmh\WeChatPayV3\Service\CombineTransaction;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Throwable;
 
 /**
@@ -35,6 +36,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
+     * @throws ResultException
      * @throws Throwable
      */
     public function createByChannel(string $channel, array $params, array $options = [])
@@ -50,6 +52,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
+     * @throws ResultException
      * @throws Throwable
      */
     public function jsapi(array $params, array $options = [])
@@ -118,11 +121,11 @@ class Client extends BaseClient
      * @param $prepayId
      * @return array
      */
-    public function jsApiPayInfo($appId, $timestamp, $prepayId): array
+    public function jsApiPayInfo($appId, $prepayId, $timestamp = null): array
     {
         $payload = [
             'appId' => $appId,
-            'timeStamp' => strval($timestamp),
+            'timeStamp' => $timestamp ? strval($timestamp) : strval(time()),
             'nonceStr' => Str::random(32),
             'package' => 'prepay_id=' . $prepayId,
         ];

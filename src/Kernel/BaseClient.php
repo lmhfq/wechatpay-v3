@@ -57,7 +57,6 @@ class BaseClient
      * @return array
      * @throws GuzzleException
      * @throws ResultException
-     * @throws Throwable
      */
     protected function request(string $method, string $url, array $options = [])
     {

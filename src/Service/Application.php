@@ -21,8 +21,8 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Ecommerce\Fund\Withdraw\Client $withdraw
  * @property Ecommerce\Fund\Balance\Client $balance
  * @property Bill\Client $bill
- * @property Pay\Transaction\Client partnerTransaction
- * @property Pay\Partner\Transaction\Client transaction
+ * @property Pay\Transaction\Client $transaction
+ * @property Pay\Partner\Transaction\Client $partnerTransaction
  */
 class Application extends ServiceContainer
 {

@@ -28,6 +28,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
+     * @throws ResultException
      * @throws Throwable
      */
     public function jsapi(array $params, array $options = [])

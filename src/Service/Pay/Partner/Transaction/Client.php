@@ -13,6 +13,7 @@ namespace Lmh\WeChatPayV3\Service\Pay\Partner\Transaction;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -40,7 +41,7 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return ResponseInterface
+     * @throws ResultException
      * @throws GuzzleException
      * @throws Throwable
      */
@@ -95,5 +96,23 @@ class Client extends BaseClient
             'paySign' => $this->sign($payload),
         ];
         return $payload;
+    }
+
+
+    /**
+     * @param string $outTradeNo
+     * @param string|array|null $query
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     * @throws Throwable
+     */
+    public function queryByOutTradeNumber(string $outTradeNo, $query = null, array $options = [])
+    {
+        $url = self::classUrl() . '/out-trade-no/' . $outTradeNo;
+        $opts = $options + ['query' => $query];
+
+        return $this->request('GET', $url, $opts);
     }
 }

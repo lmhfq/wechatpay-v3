@@ -4,6 +4,7 @@ namespace Lmh\WeChatPayV3\Service\Ecommerce\Refund;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -17,6 +18,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
+     * @throws ResultException
      * @throws Throwable
      */
     public function create(array $params, array $options = [])
@@ -33,9 +35,10 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
+     * @throws ResultException
      * @throws Throwable
      */
-    public function retrieveByOutRefundNo(string $outRefundNo, $query = null, array $options = [])
+    public function queryByOutRefundNumber(string $outRefundNo, $query = null, array $options = [])
     {
         $url = self::classUrl() . '/out-refund-no/' . $outRefundNo;
         $opts = $options + ['query' => $query];
@@ -47,11 +50,11 @@ class Client extends BaseClient
      * @param string $id
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @throws ResultException
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function retrieve(string $id, $query = null, array $options = [])
+    public function queryByRefundId(string $id, $query = null, array $options = [])
     {
         $url = self::classUrl() . '/id/' . $id;
         $opts = $options + ['query' => $query];

@@ -3,7 +3,7 @@
 namespace Lmh\WeChatPayV3\Service\Ecommerce\Applyment;
 
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Throwable;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 /**
  * Class Client.
@@ -25,13 +25,19 @@ class Client extends BaseClient
      * @param null $query
      * @param array $options
      * @return array
-     * @throws Throwable
+     * @throws ResultException
      */
     public function retrieve(string $id, $query = null, array $options = [])
     {
         return parent::retrieve($id, $query, $options);
     }
 
+    /**
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws ResultException
+     */
     public function create(array $params, array $options = [])
     {
         //解决特殊接口后缀不一致
