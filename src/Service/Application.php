@@ -16,6 +16,7 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Ecommerce\ProfitSharing\Order\Client $profitSharingOrder
  * @property Ecommerce\ProfitSharing\ReturnOrder\Client $profitSharingReturnOrder
  * @property Ecommerce\ProfitSharing\FinishOrder\Client $profitSharingFinishOrder
+ * @property Ecommerce\ProfitSharing\Receiver\Client $profitSharingReceiver
  * @property Ecommerce\Subsidy\Client $subsidy
  * @property Ecommerce\Refund\Client $refund
  * @property Ecommerce\Fund\Withdraw\Client $withdraw

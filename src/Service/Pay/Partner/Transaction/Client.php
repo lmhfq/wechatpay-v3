@@ -108,7 +108,7 @@ class Client extends BaseClient
      * @throws ResultException
      * @throws Throwable
      */
-    public function queryByOutTradeNumber(string $outTradeNo, $query = null, array $options = [])
+    public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
     {
         $url = self::classUrl() . '/out-trade-no/' . $outTradeNo;
         $opts = $options + ['query' => $query];

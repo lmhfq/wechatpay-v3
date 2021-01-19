@@ -31,6 +31,22 @@ class Client extends BaseClient
     }
 
     /**
+     * @param string $outTradeNo
+     * @param string|array|null $query
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     * @throws Throwable
+     */
+    public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
+    {
+        $url = self::classUrl() . '/out-request-no/' . $outTradeNo;
+        $opts = $options + ['query' => $query];
+        return $this->request('GET', $url, $opts);
+    }
+
+    /**
      * @param array $params
      * @param array $options
      * @return array

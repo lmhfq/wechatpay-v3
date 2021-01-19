@@ -53,9 +53,7 @@ trait RestfulMethods
     protected function create(array $params, array $options = [])
     {
         $url = self::classUrl();
-
         $opts = $options + ['json' => $params];
-
         return $this->request('POST', $url, $opts);
     }
 
