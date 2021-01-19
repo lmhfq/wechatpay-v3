@@ -26,9 +26,7 @@ class Client extends BaseClient
         $associatedData = Arr::get($resource, 'associated_data');
         $nonceStr = Arr::get($resource, 'nonce');
         $cipherText = Arr::get($resource, 'ciphertext');
-
         $data = (new AesUtil($aesKey))->decryptAES256GCM($associatedData, $nonceStr, $cipherText);
-
         return json_decode($data, true);
     }
 }

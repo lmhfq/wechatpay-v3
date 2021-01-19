@@ -51,6 +51,20 @@ class Client extends BaseClient
         return $this->request('POST', $url, $options);
     }
 
+    /**
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     */
+    public function native(array $params, array $options = []): array
+    {
+        $url = self::classUrl() . '/native';
+        $options = $options + ['json' => $params];
+        return $this->request('POST', $url, $options);
+    }
+
 
     /**
      * @param $appId
