@@ -63,7 +63,7 @@ class BaseClient
             $response = $this->requestRaw($method, $url, $options);
         } catch (RequestException $exception) {
             $result = $this->castResponse($exception->getResponse());
-            throw new ResultException($result['message'], $result['code']);
+            throw new ResultException($result['message'] ?? '', $result['code'] ?? '');
         }
         return $this->castResponse($response);
     }
@@ -94,7 +94,7 @@ class BaseClient
         // verify sign
         $this->pushMiddleware($this->verifySignMiddleware(), 'verify_sign');
 
-        
+
         $this->pushMiddleware($this->logMiddleware(), 'log');
 
         // retry

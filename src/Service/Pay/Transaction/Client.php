@@ -14,13 +14,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Throwable;
 
 class Client extends BaseClient
 {
-    /**
-     * @return string
-     */
     public static function className(): string
     {
         return 'pay/transactions';

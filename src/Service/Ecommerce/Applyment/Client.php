@@ -20,7 +20,6 @@ class Client extends BaseClient
     {
         return self::$urlName;
     }
-
     /**
      * @param string $id
      * @param null $query
