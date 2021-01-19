@@ -29,9 +29,8 @@ class Client extends BaseClient
      * @return array
      * @throws GuzzleException
      * @throws ResultException
-     * @throws Throwable
      */
-    public function jsapi(array $params, array $options = [])
+    public function jsapi(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/jsapi';
         $options = $options + ['json' => $params];
@@ -44,9 +43,8 @@ class Client extends BaseClient
      * @return array
      * @throws GuzzleException
      * @throws ResultException
-     * @throws Throwable
      */
-    public function h5(array $params, array $options = [])
+    public function h5(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/h5';
         $options = $options + ['json' => $params];
@@ -61,7 +59,7 @@ class Client extends BaseClient
      * @param null $timestamp
      * @return array
      */
-    public function appPayInfo($appId, $prepayId, $subMerchantId, $timestamp = null)
+    public function appPayInfo($appId, $prepayId, $subMerchantId, $timestamp = null): array
     {
         $payload = [
             'appId' => $appId,

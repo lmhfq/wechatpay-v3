@@ -3,6 +3,7 @@
 namespace Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\FinishOrder;
 
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 /**
  * Class Client.
@@ -21,7 +22,7 @@ class Client extends BaseClient
      * @param array $params
      * @param array $options
      * @return array
-     * @throws \Throwable
+     * @throws ResultException
      */
     public function create(array $params, array $options = [])
     {

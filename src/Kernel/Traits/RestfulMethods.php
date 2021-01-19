@@ -4,7 +4,6 @@ namespace Lmh\WeChatPayV3\Kernel\Traits;
 
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Throwable;
 
 trait RestfulMethods
 {
@@ -13,44 +12,53 @@ trait RestfulMethods
      * @param string $query
      * @param array $options
      * @return array
-     * @throws Throwable
+     * @throws ResultException
      */
-    protected function retrieve(string $id, $query = null, array $options = [])
+    protected function retrieve(string $id, $query = null, array $options = []): array
     {
         $url = $this->instanceUrl($id);
         $opts = $options + ['query' => $query];
-
         return $this->request('GET', $url, $opts);
     }
 
-    public function instanceUrl($id)
+    /**
+     * @param $id
+     * @return string
+     */
+    public function instanceUrl($id): string
     {
         return self::classUrl() . '/' . $id;
     }
 
-    public static function classUrl()
+    /**
+     * @return string
+     */
+    public static function classUrl(): string
     {
         return '/v3/' . static::className();
     }
 
-    public static function className()
+    /**
+     * @return string
+     */
+    public static function className(): string
     {
         $className = get_called_class();
         $classes = explode('\\', $className);
         $classes = array_slice($classes, 3, -1);
         foreach ($classes as $key => $val) {
             $classes[$key] = $key == count($classes) - 1 ? Str::plural(Str::snake($val)) : strtolower($val);
-        }   
+        }
         return implode('/', $classes);
     }
 
     /**
      * @param array $params
      * @param array $options
-     * @throws ResultException
      * @return array
+     * @throws ResultException
      */
-    protected function create(array $params, array $options = [])
+    protected function create(array $params, array $options = []): array
     {
         $url = self::classUrl();
         $opts = $options + ['json' => $params];
@@ -62,13 +70,12 @@ trait RestfulMethods
      * @param array $params
      * @param array $options
      * @return array
-     * @throws Throwable
+     * @throws ResultException
      */
-    protected function update(string $id, array $params, array $options = [])
+    protected function update(string $id, array $params, array $options = []): array
     {
         $url = self::instanceUrl($id);
         $opts = $options + ['json' => $params];
-
         return $this->request('PUT', $url, $opts);
     }
 
@@ -77,13 +84,12 @@ trait RestfulMethods
      * @param string $query
      * @param array $options
      * @return array
-     * @throws Throwable
+     * @throws ResultException
      */
-    protected function destroy(string $id, string $query, array $options = [])
+    protected function destroy(string $id, string $query, array $options = []): array
     {
         $url = self::instanceUrl($id);
         $opts = $options + ['query' => $query];
-
         return $this->request('DELETE', $url, $opts);
     }
 }

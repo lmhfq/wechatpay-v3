@@ -4,6 +4,7 @@ namespace Lmh\WeChatPayV3\Service\Ecommerce\Fund\Withdraw;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -23,9 +24,9 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function retrieve(string $id, $query = null, array $options = []): ResponseInterface
+    public function retrieve(string $id, $query = null, array $options = []): array
     {
         return parent::retrieve($id, $query, $options);
     }
@@ -37,9 +38,8 @@ class Client extends BaseClient
      * @return array
      * @throws GuzzleException
      * @throws ResultException
-     * @throws Throwable
      */
-    public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
+    public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = []): array
     {
         $url = self::classUrl() . '/out-request-no/' . $outTradeNo;
         $opts = $options + ['query' => $query];
@@ -50,10 +50,9 @@ class Client extends BaseClient
      * @param array $params
      * @param array $options
      * @return array
-     * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function create(array $params, array $options = [])
+    public function create(array $params, array $options = []): array
     {
         return parent::create($params, $options);
     }

@@ -14,7 +14,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 class Client extends BaseClient
@@ -29,9 +28,9 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function jsapi(array $params, array $options = [])
+    public function jsapi(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/jsapi';
         $options = $options + ['json' => $params];
@@ -45,7 +44,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function h5(array $params, array $options = [])
+    public function h5(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/h5';
         $options = $options + ['json' => $params];
@@ -60,7 +59,7 @@ class Client extends BaseClient
      * @param null $timestamp
      * @return array
      */
-    public function appPayInfo($appId, $prepayId, $subMerchantId, $timestamp = null)
+    public function appPayInfo($appId, $prepayId, $subMerchantId, $timestamp = null): array
     {
         $payload = [
             'appId' => $appId,
@@ -108,11 +107,10 @@ class Client extends BaseClient
      * @throws ResultException
      * @throws Throwable
      */
-    public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
+    public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = []): array
     {
         $url = self::classUrl() . '/out-trade-no/' . $outTradeNo;
         $opts = $options + ['query' => $query];
-
         return $this->request('GET', $url, $opts);
     }
 }

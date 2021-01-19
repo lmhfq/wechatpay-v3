@@ -72,7 +72,6 @@ class BaseClient
      * @param string $method
      * @param string $url
      * @param array $options
-     * @return ResponseInterface
      * @throws GuzzleException
      */
     protected function requestRaw(string $method, string $url, array $options = [])
