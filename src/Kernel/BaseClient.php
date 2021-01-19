@@ -19,7 +19,6 @@ use Lmh\WeChatPayV3\Kernel\Traits\SignatureGenerator;
 use Lmh\WeChatPayV3\Kernel\Utils\RsaUtil;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
 class BaseClient
 {
@@ -96,8 +95,8 @@ class BaseClient
         // verify sign
         $this->pushMiddleware($this->verifySignMiddleware(), 'verify_sign');
 
-
-        //   $this->pushMiddleware($this->logMiddleware(), 'log');
+        
+        $this->pushMiddleware($this->logMiddleware(), 'log');
 
         // retry
         $this->pushMiddleware($this->retryMiddleware(), 'retry');
@@ -254,7 +253,6 @@ class BaseClient
     protected function logMiddleware()
     {
         $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
-
         return Middleware::log($this->app['logger'], $formatter);
     }
 }

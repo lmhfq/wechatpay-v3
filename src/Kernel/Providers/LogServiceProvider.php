@@ -26,11 +26,6 @@ class LogServiceProvider implements ServiceProviderInterface
     {
         !isset($pimple['log']) && $pimple['log'] = function ($app) {
             $config = $this->formatLogConfig($app);
-
-            if (!empty($config)) {
-                $app->rebind('config', $app['config']->merge($config));
-            }
-
             return new LogManager($app);
         };
 
@@ -39,7 +34,7 @@ class LogServiceProvider implements ServiceProviderInterface
 
     public function formatLogConfig($app)
     {
-        if (!empty($app['config']->get('log.channels'))) {
+        if (!empty($app['config']->get('log')['channels'])) {
             return $app['config']->get('log');
         }
 

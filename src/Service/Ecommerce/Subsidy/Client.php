@@ -4,7 +4,6 @@ namespace Lmh\WeChatPayV3\Service\Ecommerce\Subsidy;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Throwable;
 
 /**
@@ -18,7 +17,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws ResultException
+     * @throws Throwable
      */
     public function create(array $params, array $options = [])
     {
@@ -33,7 +32,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws ResultException
+     * @throws Throwable
      */
     public function return(array $params, array $options = [])
     {
@@ -48,7 +47,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws ResultException
+     * @throws Throwable
      */
     public function cancel(array $params, array $options = [])
     {

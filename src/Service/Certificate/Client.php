@@ -4,7 +4,6 @@ namespace Lmh\WeChatPayV3\Service\Certificate;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 /**
  * Class Client.
@@ -16,7 +15,7 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws ResultException
+     * @throws \Throwable
      */
     public function all($query = null, array $options = [])
     {

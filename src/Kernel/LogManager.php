@@ -173,8 +173,9 @@ class LogManager implements LoggerInterface
      */
     protected function resolve($name)
     {
-        $config = $this->app['config']->get(sprintf('log.channels.%s', $name));
+        $channels = $this->app['config']['log']['channels'];
 
+        $config = $channels[$name] ?? null;
         if (is_null($config)) {
             throw new InvalidArgumentException(sprintf('Log [%s] is not defined.', $name));
         }
@@ -285,7 +286,7 @@ class LogManager implements LoggerInterface
      */
     public function getDefaultDriver()
     {
-        return $this->app['config']['log.default'];
+        return $this->app['config']['log']['default'];
     }
 
     /**
@@ -295,7 +296,7 @@ class LogManager implements LoggerInterface
      */
     protected function parseChannel(array $config)
     {
-        return $config['name'] ?? 'EasyWeChat';
+        return $config['name'] ?? 'wechatpay-v3';
     }
 
     /**
@@ -305,7 +306,7 @@ class LogManager implements LoggerInterface
      */
     public function setDefaultDriver($name)
     {
-        $this->app['config']['log.default'] = $name;
+        $this->app['config']['log']['default'] = $name;
     }
 
     /**
@@ -525,7 +526,7 @@ class LogManager implements LoggerInterface
             $this->prepareHandler(new SlackWebhookHandler(
                 $config['url'],
                 $config['channel'] ?? null,
-                $config['username'] ?? 'EasyWeChat',
+                $config['username'] ?? 'wechatpay-v3',
                 $config['attachment'] ?? true,
                 $config['emoji'] ?? ':boom:',
                 $config['short'] ?? false,
@@ -546,7 +547,7 @@ class LogManager implements LoggerInterface
     {
         return new Monolog($this->parseChannel($config), [
             $this->prepareHandler(new SyslogHandler(
-                'EasyWeChat',
+                'wechatpay-v3',
                 $config['facility'] ?? LOG_USER,
                 $this->level($config)
             ), $config),
@@ -572,6 +573,6 @@ class LogManager implements LoggerInterface
 
     protected function createNullDriver()
     {
-        return new Monolog('EasyWeChat', [new NullHandler()]);
+        return new Monolog('wechatpay-v3', [new NullHandler()]);
     }
 }

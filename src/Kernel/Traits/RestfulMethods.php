@@ -10,12 +10,12 @@ trait RestfulMethods
 {
     /**
      * @param string $id
-     * @param null $query
+     * @param string $query
      * @param array $options
-     * @throws ResultException
      * @return array
+     * @throws Throwable
      */
-    protected function retrieve(string $id, $query = null, array $options = []): array
+    protected function retrieve(string $id, $query = null, array $options = [])
     {
         $url = $this->instanceUrl($id);
         $opts = $options + ['query' => $query];
@@ -23,10 +23,6 @@ trait RestfulMethods
         return $this->request('GET', $url, $opts);
     }
 
-    /**
-     * @param $id
-     * @return string
-     */
     public function instanceUrl($id)
     {
         return self::classUrl() . '/' . $id;
@@ -68,7 +64,7 @@ trait RestfulMethods
      * @param array $params
      * @param array $options
      * @return array
-     * @throws ResultException
+     * @throws Throwable
      */
     protected function update(string $id, array $params, array $options = [])
     {
@@ -83,7 +79,7 @@ trait RestfulMethods
      * @param string $query
      * @param array $options
      * @return array
-     * @throws ResultException
+     * @throws Throwable
      */
     protected function destroy(string $id, string $query, array $options = [])
     {

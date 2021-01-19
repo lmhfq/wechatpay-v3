@@ -27,7 +27,7 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */

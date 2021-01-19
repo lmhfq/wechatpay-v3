@@ -6,7 +6,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\HashException;
-use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -26,7 +25,7 @@ class Client extends BaseClient
      * @param array $options
      * @return mixed|ResponseInterface
      * @throws GuzzleException
-     * @throws ResultException
+     * @throws Throwable
      */
     public function retrieveTradeBill($query = null, array $options = [])
     {
