@@ -16,7 +16,7 @@ class Client extends BaseClient
     /**
      * @return string
      */
-    public static function className()
+    public static function className(): string
     {
         return self::$urlName;
     }

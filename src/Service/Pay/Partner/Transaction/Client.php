@@ -18,7 +18,7 @@ use Throwable;
 
 class Client extends BaseClient
 {
-    public static function className()
+    public static function className(): string
     {
         return 'pay/partner/transactions';
     }
