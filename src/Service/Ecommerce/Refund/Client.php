@@ -37,7 +37,6 @@ class Client extends BaseClient
     {
         $url = self::classUrl() . '/out-refund-no/' . $outRefundNo;
         $opts = $options + ['query' => $query];
-
         return $this->request('GET', $url, $opts);
     }
 
@@ -52,7 +51,6 @@ class Client extends BaseClient
     {
         $url = self::classUrl() . '/id/' . $id;
         $opts = $options + ['query' => $query];
-
         return $this->request('GET', $url, $opts);
     }
 }

@@ -4,6 +4,7 @@ namespace Lmh\WeChatPayV3\Service\Apply4Sub\SubMerchant;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Throwable;
 
 /**
@@ -18,13 +19,12 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
     public function retrieveSettlement(string $subMerchantId, $query = null, array $options = [])
     {
         $url = self::classUrl() . '/' . $subMerchantId . '/settlement';
         $opts = $options + ['query' => $query];
-
         return $this->request('GET', $url, $opts);
     }
 
@@ -34,13 +34,12 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
     public function updateSettlement(string $subMerchantId, array $params, array $options = [])
     {
         $url = self::classUrl() . '/' . $subMerchantId . '/modify-settlement';
         $opts = $options + ['json' => $params];
-
         return $this->request('POST', $url, $opts);
     }
 }

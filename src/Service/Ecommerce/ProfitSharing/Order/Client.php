@@ -5,7 +5,6 @@ namespace Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\Order;
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Throwable;
 
 /**
  * Class Client.
@@ -23,7 +22,20 @@ class Client extends BaseClient
     {
         $url = self::classUrl();
         $opts = $options + ['query' => $query];
+        return $this->request('GET', $url, $opts);
+    }
 
+    /**
+     * @param array|null $query
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     */
+    public function amount(array $params, array $query = null, array $options = [])
+    {
+        $url = self::classUrl() . '/amounts';
+        $opts = $options + ['query' => $query];
         return $this->request('GET', $url, $opts);
     }
 
