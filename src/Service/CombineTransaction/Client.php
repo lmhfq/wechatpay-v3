@@ -6,14 +6,16 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Throwable;
 
 /**
  * Class Client.
  */
 class Client extends BaseClient
 {
-    public static function className()
+    /**
+     * @return string
+     */
+    public static function className(): string
     {
         return 'combine-transactions';
     }
@@ -23,9 +25,9 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function app(array $params, array $options = [])
+    public function app(array $params, array $options = []): array
     {
         return $this->createByChannel('app', $params, $options);
     }
@@ -37,9 +39,8 @@ class Client extends BaseClient
      * @return array
      * @throws GuzzleException
      * @throws ResultException
-     * @throws Throwable
      */
-    public function createByChannel(string $channel, array $params, array $options = [])
+    public function createByChannel(string $channel, array $params, array $options = []): array
     {
         $url = self::classUrl() . '/' . $channel;
         $opts = $options + ['json' => $params];
@@ -53,11 +54,22 @@ class Client extends BaseClient
      * @return array
      * @throws GuzzleException
      * @throws ResultException
-     * @throws Throwable
      */
-    public function jsapi(array $params, array $options = [])
+    public function jsapi(array $params, array $options = []): array
     {
         return $this->createByChannel('jsapi', $params, $options);
+    }
+
+    /**
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     */
+    public function native(array $params, array $options = []): array
+    {
+        return $this->createByChannel('native', $params, $options);
     }
 
     /**
@@ -66,13 +78,12 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function retrieveByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
+    public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = []): array
     {
         $url = self::classUrl() . '/out-trade-no/' . $outTradeNo;
         $opts = $options + ['query' => $query];
-
         return $this->request('GET', $url, $opts);
     }
 
@@ -82,9 +93,9 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function closeByOutTradeNo(string $outTradeNo, $query = null, array $options = [])
+    public function closeByOutTradeNo(string $outTradeNo, $query = null, array $options = []): array
     {
         $url = self::classUrl() . '/out-trade-no/' . $outTradeNo . '/close';
         $opts = $options + ['query' => $query];
@@ -98,7 +109,7 @@ class Client extends BaseClient
      * @param $prepayId
      * @return array
      */
-    public function appPayInfo($appId, $timestamp, $prepayId, $subMerchantId)
+    public function appPayInfo($appId, $timestamp, $prepayId, $subMerchantId): array
     {
         $payload = [
             'appId' => $appId,
@@ -111,7 +122,6 @@ class Client extends BaseClient
             'packageValue' => 'Sign=WXPay',
             'paySign' => $this->sign($payload),
         ];
-
         return $payload;
     }
 
