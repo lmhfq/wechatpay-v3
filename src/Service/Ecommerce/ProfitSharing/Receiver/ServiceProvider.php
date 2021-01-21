@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\Receiver;
 
-use Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\Order\Client;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -13,7 +12,7 @@ use Pimple\ServiceProviderInterface;
  * Date: 2021/1/19
  * Time: 下午2:48
  */
-class ServiceProvider  implements ServiceProviderInterface
+class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}.

@@ -79,7 +79,7 @@ class Certificate
         $aesKey = $this->app['config']->get('aes_key');
         $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
         if ($client != null && $client instanceof Redis) {
-            $client->set($this->getSerialNoCacheKey($mchId), $serialNo);
+            $client->set($this->getSerialNoCacheKey($mchId), $serialNo, $ttl);
             $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
         }
         return $serialNo;
@@ -153,7 +153,7 @@ class Certificate
         $aesKey = $this->app->config->get('aes_key');
         $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
         if ($client != null && $client instanceof Redis) {
-            $client->set($this->getSerialNoCacheKey($mchId), $serialNo);
+            $client->set($this->getSerialNoCacheKey($mchId), $serialNo, $ttl);
             $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
         }
         return $publicKey;

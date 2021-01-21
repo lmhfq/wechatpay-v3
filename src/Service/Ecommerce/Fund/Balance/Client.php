@@ -3,15 +3,17 @@
 namespace Lmh\WeChatPayV3\Service\Ecommerce\Fund\Balance;
 
 use Lmh\WeChatPayV3\Kernel\BaseClient;
-use Psr\Http\Message\ResponseInterface;
-use Throwable;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 /**
  * Class Client.
  */
 class Client extends BaseClient
 {
-    public static function className()
+    /**
+     * @return string
+     */
+    public static function className(): string
     {
         return 'ecommerce/fund/balance';
     }
@@ -21,9 +23,9 @@ class Client extends BaseClient
      * @param string|array|null $query
      * @param array $options
      * @return array
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function retrieve(string $subMerchantId, $query = null, array $options = []): ResponseInterface
+    public function retrieve(string $subMerchantId, $query = null, array $options = []): array
     {
         return parent::retrieve($subMerchantId, $query, $options);
     }

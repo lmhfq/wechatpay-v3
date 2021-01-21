@@ -13,7 +13,10 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
  */
 class Client extends \Lmh\WeChatPayV3\Kernel\BaseClient
 {
-    public static function className()
+    /**
+     * @return string
+     */
+    public static function className(): string
     {
         return 'ecommerce/profitsharing/receivers';
     }

@@ -40,6 +40,7 @@ class Application extends ServiceContainer
         Ecommerce\ProfitSharing\Order\ServiceProvider::class,
         Ecommerce\ProfitSharing\ReturnOrder\ServiceProvider::class,
         Ecommerce\ProfitSharing\FinishOrder\ServiceProvider::class,
+        Ecommerce\ProfitSharing\Receiver\ServiceProvider::class,
         Ecommerce\Subsidy\ServiceProvider::class,
         Ecommerce\Refund\ServiceProvider::class,
         Ecommerce\Fund\Withdraw\ServiceProvider::class,

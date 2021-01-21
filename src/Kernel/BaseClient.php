@@ -113,14 +113,14 @@ class BaseClient
                 RequestInterface $request,
                 array $options
             ) use ($handler) {
-                $encodeParams = Arr::get($options, 'encode_params', []);
+                $encodeParams = Arr::get($options, 'encode_params', []); 
                 if (!empty($encodeParams)) {
                     $body = $request->getBody()->getContents();
                     $request->getBody()->rewind();
                     $params = json_decode($body, true);
+                    $certificate = (new Certificate($this->app));
+                    $serialNo = $certificate->getAvailableSerialNo();
                     if (!empty($params)) {
-                        $certificate = (new Certificate($this->app));
-                        $serialNo = $certificate->getAvailableSerialNo();
                         foreach ($encodeParams as $encodeParam) {
                             $value = Arr::get($params, $encodeParam);
                             if (!is_null($value)) {

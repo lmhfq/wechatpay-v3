@@ -46,7 +46,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function create(array $params, array $options = [])
+    public function create(array $params, array $options = []): array
     {
         return parent::create($params, $options);
     }
