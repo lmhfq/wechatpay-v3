@@ -26,15 +26,16 @@ class Client extends BaseClient
     }
 
     /**
+     * 查询订单剩余待分金额
      * @param array|null $query
      * @param array $options
      * @return array
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function amount(array $params, array $query = null, array $options = [])
+    public function amount(string $transactionId, array $query = null, array $options = [])
     {
-        $url = self::classUrl() . '/amounts';
+        $url = self::classUrl() . '/' . $transactionId . '/amounts';
         $opts = $options + ['query' => $query];
         return $this->request('GET', $url, $opts);
     }

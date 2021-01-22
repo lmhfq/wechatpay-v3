@@ -13,7 +13,7 @@ class Client extends BaseClient
     /**
      * @return string
      */
-    public static function className()
+    public static function className(): string
     {
         return 'ecommerce/profitsharing/finish-order';
     }
@@ -24,7 +24,7 @@ class Client extends BaseClient
      * @return array
      * @throws ResultException
      */
-    public function create(array $params, array $options = [])
+    public function create(array $params, array $options = []): array
     {
         return parent::create($params, $options);
     }
