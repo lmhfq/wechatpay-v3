@@ -113,7 +113,7 @@ class BaseClient
                 RequestInterface $request,
                 array $options
             ) use ($handler) {
-                $encodeParams = Arr::get($options, 'encode_params', []); 
+                $encodeParams = Arr::get($options, 'encode_params', []);
                 if (!empty($encodeParams)) {
                     $body = $request->getBody()->getContents();
                     $request->getBody()->rewind();
@@ -213,6 +213,17 @@ class BaseClient
     }
 
     /**
+     * Log the request.
+     *
+     * @return Closure
+     */
+    protected function logMiddleware()
+    {
+        $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
+        return Middleware::log($this->app['logger'], $formatter);
+    }
+
+    /**
      * Return retry middleware.
      *
      * @return Closure
@@ -241,17 +252,5 @@ class BaseClient
         }, function () {
             return abs($this->app['config']->get('http.retry_delay', 500));
         });
-    }
-
-
-    /**
-     * Log the request.
-     *
-     * @return Closure
-     */
-    protected function logMiddleware()
-    {
-        $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
-        return Middleware::log($this->app['logger'], $formatter);
     }
 }
