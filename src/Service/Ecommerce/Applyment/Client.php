@@ -56,7 +56,7 @@ class Client extends BaseClient
      */
     public function queryByOutTradeNo(string $outTradeNo, $query = null, array $options = []): array
     {
-        $url = self::classUrl() . '/out_request_no/' . $outTradeNo;
+        $url = self::classUrl() . '/out-request-no/' . $outTradeNo;
         $opts = $options + ['query' => $query];
         return $this->request('GET', $url, $opts);
     }

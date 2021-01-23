@@ -136,30 +136,33 @@ class BaseClient
                     $request = $request->withHeader('WeChatPay-Serial', $serialNo);
                 }
 
-                /** @var ResponseInterface $response */
-                $response = $handler($request, $options);
-                $decodeParams = Arr::get($options, 'decode_params', []);
-                if (!empty($decodeParams)) {
-                    $body = $response->getBody()->getContents();
-                    $response->getBody()->rewind();
-                    $params = json_decode($body, true);
-                    if (!empty($params)) {
-                        foreach ($decodeParams as $decodeParam) {
-                            $value = Arr::get($params, $decodeParam);
-                            if (!is_null($value)) {
-                                $decryptedValue = RsaUtil::privateDecrypt(
-                                    $value,
-                                    $this->app['config']->private_key
-                                );
+                /** @var Promise $promise */
+                $promise = $handler($request, $options);
 
-                                Arr::set($params, $decodeParam, $decryptedValue);
+                return $promise->then(
+                    function (ResponseInterface $response) use ($options) {
+                        $decodeParams = Arr::get($options, 'decode_params', []);
+                        if (!empty($decodeParams)) {
+                            $response->getBody()->rewind();
+                            $body = $response->getBody()->getContents();
+                            $params = json_decode($body, true);
+                            if (!empty($params)) {
+                                foreach ($decodeParams as $decodeParam) {
+                                    $value = Arr::get($params, $decodeParam);
+                                    if (!is_null($value)) {
+                                        $decryptedValue = RsaUtil::privateDecrypt(
+                                            $value,
+                                            $this->app->config->get('private_key')
+                                        );
+                                        Arr::set($params, $decodeParam, $decryptedValue);
+                                    }
+                                }
+                                $response = $response->withBody(Psr7\stream_for(json_encode($params)));
                             }
+                            return $response;
                         }
-                        $response = $response->withBody(Psr7\stream_for(json_encode($params)));
                     }
-                }
-
-                return $response;
+                );
             };
         };
     }
