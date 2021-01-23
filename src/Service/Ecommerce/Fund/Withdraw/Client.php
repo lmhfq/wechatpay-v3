@@ -5,8 +5,6 @@ namespace Lmh\WeChatPayV3\Service\Ecommerce\Fund\Withdraw;
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
 /**
  * Class Client.

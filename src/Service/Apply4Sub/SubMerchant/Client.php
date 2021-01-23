@@ -5,7 +5,6 @@ namespace Lmh\WeChatPayV3\Service\Apply4Sub\SubMerchant;
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Throwable;
 
 /**
  * Class Client.
