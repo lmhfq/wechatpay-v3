@@ -67,6 +67,18 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
+    public function h5(array $params, array $options = []): array
+    {
+        return $this->createByChannel('h5', $params, $options);
+    }
+
+    /**
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     */
     public function native(array $params, array $options = []): array
     {
         return $this->createByChannel('native', $params, $options);
