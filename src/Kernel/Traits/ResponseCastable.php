@@ -11,7 +11,7 @@ trait ResponseCastable
      *
      * @return array
      */
-    protected function castResponse(ResponseInterface $response)
+    protected function castResponse(ResponseInterface $response): array
     {
         $response->getBody()->rewind();
         $contents = $response->getBody()->getContents();

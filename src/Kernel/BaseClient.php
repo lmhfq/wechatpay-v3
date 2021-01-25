@@ -42,22 +42,21 @@ class BaseClient
      *
      * @return Closure
      */
-    protected function certificateMiddleware()
+    protected function certificateMiddleware(): Closure
     {
         return Middleware::tap(null, function (RequestInterface $request, $options, ResponseInterface $response) {
-
         });
     }
 
     /**
-     * @param string $url
      * @param string $method
+     * @param string $url
      * @param array $options
      * @return array
      * @throws GuzzleException
      * @throws ResultException
      */
-    protected function request(string $method, string $url, array $options = [])
+    protected function request(string $method, string $url, array $options = []): array
     {
         try {
             $response = $this->requestRaw($method, $url, $options);
@@ -72,14 +71,14 @@ class BaseClient
      * @param string $method
      * @param string $url
      * @param array $options
+     * @return ResponseInterface
      * @throws GuzzleException
      */
-    protected function requestRaw(string $method, string $url, array $options = [])
+    protected function requestRaw(string $method, string $url, array $options = []): ResponseInterface
     {
         if (empty($this->middlewares)) {
             $this->registerHttpMiddleware();
         }
-
         return $this->performRequest($url, $method, $options);
     }
 
@@ -138,7 +137,6 @@ class BaseClient
 
                 /** @var Promise $promise */
                 $promise = $handler($request, $options);
-
                 return $promise->then(
                     function (ResponseInterface $response) use ($options) {
                         $decodeParams = Arr::get($options, 'decode_params', []);
@@ -159,8 +157,8 @@ class BaseClient
                                 }
                                 $response = $response->withBody(Psr7\stream_for(json_encode($params)));
                             }
-                            return $response;
                         }
+                        return $response;
                     }
                 );
             };
@@ -172,7 +170,7 @@ class BaseClient
      *
      * @return Closure
      */
-    protected function authMiddleware()
+    protected function authMiddleware(): Closure
     {
         return function (callable $handler) {
             return function (
@@ -193,7 +191,7 @@ class BaseClient
      *
      * @return Closure
      */
-    protected function verifySignMiddleware()
+    protected function verifySignMiddleware(): Closure
     {
         return function (callable $handler) {
             return function (
@@ -220,7 +218,7 @@ class BaseClient
      *
      * @return Closure
      */
-    protected function logMiddleware()
+    protected function logMiddleware(): Closure
     {
         $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
         return Middleware::log($this->app['logger'], $formatter);
@@ -231,7 +229,7 @@ class BaseClient
      *
      * @return Closure
      */
-    protected function retryMiddleware()
+    protected function retryMiddleware(): Closure
     {
         return Middleware::retry(function (
             $retries,
