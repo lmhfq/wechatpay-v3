@@ -20,7 +20,7 @@ class Client extends BaseClient
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    public function parseResource(array $resource)
+    public function parseResource(array $resource): array
     {
         $aesKey = $this->app['config']->get('aes_key');
         $associatedData = Arr::get($resource, 'associated_data');

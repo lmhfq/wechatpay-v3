@@ -20,7 +20,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function retrieveSettlement(string $subMerchantId, $query = null, array $options = [])
+    public function retrieveSettlement(string $subMerchantId, $query = null, array $options = []): array
     {
         $url = self::classUrl() . '/' . $subMerchantId . '/settlement';
         $opts = $options + ['query' => $query];
@@ -35,7 +35,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function updateSettlement(string $subMerchantId, array $params, array $options = [])
+    public function updateSettlement(string $subMerchantId, array $params, array $options = []): array
     {
         $url = self::classUrl() . '/' . $subMerchantId . '/modify-settlement';
         $opts = $options + ['json' => $params];

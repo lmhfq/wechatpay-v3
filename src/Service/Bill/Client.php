@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\HashException;
+use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -14,7 +15,10 @@ use Throwable;
  */
 class Client extends BaseClient
 {
-    public static function className()
+    /**
+     * @return string
+     */
+    public static function className(): string
     {
         return 'bill';
     }
@@ -23,11 +27,10 @@ class Client extends BaseClient
      * @param string $id
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|ResponseInterface
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function retrieveTradeBill($query = null, array $options = [])
+    public function retrieveTradeBill($query = null, array $options = []): array
     {
         $url = self::classUrl() . '/tradebill';
         $opts = $options + ['query' => $query];
@@ -39,11 +42,10 @@ class Client extends BaseClient
      * @param string $id
      * @param string|array|null $query
      * @param array $options
-     * @return mixed|ResponseInterface
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
      */
-    public function retrieveFundFlowBill($query = null, array $options = [])
+    public function retrieveFundFlowBill($query = null, array $options = []): array
     {
         $url = self::classUrl() . 'fundflowbill';
         $opts = $options + ['query' => $query];
@@ -53,9 +55,10 @@ class Client extends BaseClient
 
     /**
      * @param $body
-     * @return mixed|ResponseInterface
+     * @return string
      * @throws GuzzleException
-     * @throws Throwable
+     * @throws ResultException
+     * @throws HashException
      */
     public function download($body)
     {

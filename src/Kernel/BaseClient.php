@@ -220,7 +220,7 @@ class BaseClient
      */
     protected function logMiddleware(): Closure
     {
-        $formatter = new MessageFormatter($this->app['config']['http.log_template'] ?? MessageFormatter::DEBUG);
+        $formatter = new MessageFormatter($this->app['config']['http']['log_template'] ?? MessageFormatter::DEBUG);
         return Middleware::log($this->app['logger'], $formatter);
     }
 
