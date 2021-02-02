@@ -1,8 +1,12 @@
 # wechatpay-v3
 
-用于框架的微信支付 V3 的 API
+一个很好用的的微信支付 V3 的 API
 
 ## 安装
+
+```
+composer require lmh/wechatpay-v3
+```
 
 ### 敏感参数加解密
 
