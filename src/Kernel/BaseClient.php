@@ -61,7 +61,11 @@ class BaseClient
         try {
             $response = $this->requestRaw($method, $url, $options);
         } catch (RequestException $exception) {
-            $result = $this->castResponse($exception->getResponse());
+            if ($exception->getResponse() != null) {
+                $result = $this->castResponse($exception->getResponse());
+            } else {
+                $result['message'] = $exception->getMessage();
+            }
             throw new ResultException($result['message'] ?? '', $result['code'] ?? '');
         }
         return $this->castResponse($response);
