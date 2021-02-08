@@ -82,6 +82,9 @@ class BaseClient
     {
         if (empty($this->middlewares)) {
             $this->registerHttpMiddleware();
+            if ($url !== '/v3/merchant/media/upload') {
+                $this->pushMiddleware($this->logMiddleware(), 'log');
+            }
         }
         return $this->performRequest($url, $method, $options);
     }
@@ -96,9 +99,6 @@ class BaseClient
 
         // verify sign
         $this->pushMiddleware($this->verifySignMiddleware(), 'verify_sign');
-
-
-        $this->pushMiddleware($this->logMiddleware(), 'log');
 
         // retry
         $this->pushMiddleware($this->retryMiddleware(), 'retry');
