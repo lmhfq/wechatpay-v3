@@ -40,7 +40,6 @@ class Client extends BaseClient
         return $this->request('PATCH', $url, $options);
     }
 
-
     /**
      * 关闭广告展示API
      * @param array $params
@@ -53,6 +52,21 @@ class Client extends BaseClient
     public function closeAdvertisingShow(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/close-advertising-show';
+        $options = $options + ['json' => $params];
+        return $this->request('POST', $url, $options);
+    }
+
+    /**
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     * @author lmh
+     */
+    public function changeGoldPlanStatus(array $params, array $options = []): array
+    {
+        $url = self::classUrl() . '/changegoldplanstatus';
         $options = $options + ['json' => $params];
         return $this->request('POST', $url, $options);
     }
