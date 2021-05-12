@@ -27,6 +27,7 @@ class Client extends BaseClient
 
     /**
      * 查询订单剩余待分金额
+     * @param string $transactionId
      * @param array|null $query
      * @param array $options
      * @return array
@@ -44,7 +45,6 @@ class Client extends BaseClient
      * @param array $params
      * @param array $options
      * @return array
-     * @throws GuzzleException
      * @throws ResultException
      */
     public function create(array $params, array $options = []): array

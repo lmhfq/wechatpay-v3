@@ -24,9 +24,9 @@ class Client extends BaseClient
     }
 
     /**
-     * @param string $id
      * @param string|array|null $query
      * @param array $options
+     * @return array
      * @throws GuzzleException
      * @throws ResultException
      */
@@ -39,9 +39,9 @@ class Client extends BaseClient
     }
 
     /**
-     * @param string $id
      * @param string|array|null $query
      * @param array $options
+     * @return array
      * @throws GuzzleException
      * @throws ResultException
      */
@@ -60,7 +60,7 @@ class Client extends BaseClient
      * @throws ResultException
      * @throws HashException
      */
-    public function download($body)
+    public function download($body): string
     {
         $response = $this->requestRaw('GET', Arr::get($body, 'download_url'));
         $fileStream = $response->getBody()->getContents();

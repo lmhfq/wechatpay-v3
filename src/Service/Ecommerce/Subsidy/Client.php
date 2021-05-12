@@ -20,7 +20,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function create(array $params, array $options = [])
+    public function create(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/create';
         $opts = $options + ['json' => $params];
@@ -50,7 +50,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function cancel(array $params, array $options = [])
+    public function cancel(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/cancel';
         $opts = $options + ['json' => $params];

@@ -36,11 +36,11 @@ class Client extends BaseClient
     /**
      * @param array $params
      * @param array $options
-     * @return mixed|ResponseInterface
+     * @return array
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function create(array $params, array $options = [])
+    public function create(array $params, array $options = []): array
     {
         return parent::create($params, $options);
     }

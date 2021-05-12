@@ -18,7 +18,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function create(array $params, array $options = [])
+    public function create(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/apply';
         $opts = $options + ['json' => $params];
@@ -44,6 +44,7 @@ class Client extends BaseClient
      * @param string $id
      * @param string|array|null $query
      * @param array $options
+     * @return array
      * @throws GuzzleException
      * @throws ResultException
      */
