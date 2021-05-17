@@ -25,6 +25,54 @@ class Client extends BaseClient
     }
 
     /**
+     * 点金计划管理API
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     * @author lmh
+     */
+    public function changeGoldPlanStatus(array $params, array $options = []): array
+    {
+        $url = self::classUrl() . '/changegoldplanstatus';
+        $options = $options + ['json' => $params];
+        return $this->request('POST', $url, $options);
+    }
+
+    /**
+     * 商家小票管理API
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     * @author lmh
+     */
+    public function changeCustomPageStatus(array $params, array $options = []): array
+    {
+        $url = self::classUrl() . '/changecustompagestatus';
+        $options = $options + ['json' => $params];
+        return $this->request('POST', $url, $options);
+    }
+
+    /**
+     * 同业过滤标签管理API
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     * @author lmh
+     */
+    public function setAdvertisingIndustryFilter(array $params, array $options = []): array
+    {
+        $url = self::classUrl() . '/set-advertising-industry-filter';
+        $options = $options + ['json' => $params];
+        return $this->request('POST', $url, $options);
+    }
+
+    /**
      * 开通广告展示AP
      * @param array $params
      * @param array $options
@@ -56,18 +104,5 @@ class Client extends BaseClient
         return $this->request('POST', $url, $options);
     }
 
-    /**
-     * @param array $params
-     * @param array $options
-     * @return array
-     * @throws GuzzleException
-     * @throws ResultException
-     * @author lmh
-     */
-    public function changeGoldPlanStatus(array $params, array $options = []): array
-    {
-        $url = self::classUrl() . '/changegoldplanstatus';
-        $options = $options + ['json' => $params];
-        return $this->request('POST', $url, $options);
-    }
+
 }
