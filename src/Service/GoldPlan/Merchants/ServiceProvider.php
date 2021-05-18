@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Lmh\WeChatPayV3\Service\GoldPlan\Merchants;
 
-
-use Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\FinishOrder\Client;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

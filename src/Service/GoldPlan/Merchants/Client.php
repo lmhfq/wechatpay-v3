@@ -103,6 +103,4 @@ class Client extends BaseClient
         $options = $options + ['json' => $params];
         return $this->request('POST', $url, $options);
     }
-
-
 }
