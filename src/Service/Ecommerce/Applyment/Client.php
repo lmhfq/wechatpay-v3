@@ -2,6 +2,7 @@
 
 namespace Lmh\WeChatPayV3\Service\Ecommerce\Applyment;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Throwable;
@@ -38,12 +39,13 @@ class Client extends BaseClient
      * @param array $options
      * @return array
      * @throws ResultException
+     * @throws GuzzleException
      */
     public function create(array $params, array $options = []): array
     {
-        //解决特殊接口后缀不一致
-        self::$urlName .= '/';
-        return parent::create($params, $options);
+        $url = self::classUrl() . '/';
+        $opts = $options + ['json' => $params];
+        return $this->request('POST', $url, $opts);
     }
 
     /**
