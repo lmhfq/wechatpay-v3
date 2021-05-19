@@ -32,7 +32,7 @@ class LogServiceProvider implements ServiceProviderInterface
         !isset($pimple['logger']) && $pimple['logger'] = $pimple['log'];
     }
 
-    public function formatLogConfig($app)
+    public function formatLogConfig($app): array
     {
         if (!empty($app['config']->get('log')['channels'])) {
             return $app['config']->get('log');

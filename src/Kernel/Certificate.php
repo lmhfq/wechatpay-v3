@@ -43,7 +43,7 @@ class Certificate
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function getAvailableSerialNo()
+    public function getAvailableSerialNo(): string
     {
         $ttl = 12 * 3600;
         /**
@@ -89,7 +89,7 @@ class Certificate
      * @param $mchId
      * @return string
      */
-    private function getSerialNoCacheKey($mchId)
+    private function getSerialNoCacheKey($mchId): string
     {
         return self::SERIAL_NUMBER_CACHE . $mchId;
     }
@@ -119,7 +119,7 @@ class Certificate
      * @param $serialNo
      * @return string
      */
-    private function getPublicKeyCacheKey($serialNo)
+    private function getPublicKeyCacheKey($serialNo): string
     {
         return self::CERTIFICATE_CACHE_PREFIX . $serialNo;
     }
@@ -127,6 +127,11 @@ class Certificate
     /**
      * @param $serialNo
      * @return mixed
+     * @throws DecryptException
+     * @throws Exceptions\ResultException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      * @throws SignInvalidException
      */
     public function getPublicKey($serialNo)
