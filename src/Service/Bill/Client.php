@@ -7,8 +7,6 @@ use Illuminate\Support\Arr;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\HashException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
 /**
  * Class Client.
@@ -47,7 +45,7 @@ class Client extends BaseClient
      */
     public function retrieveFundFlowBill($query = null, array $options = []): array
     {
-        $url = self::classUrl() . 'fundflowbill';
+        $url = self::classUrl() . '/fundflowbill';
         $opts = $options + ['query' => $query];
 
         return $this->request('GET', $url, $opts);
