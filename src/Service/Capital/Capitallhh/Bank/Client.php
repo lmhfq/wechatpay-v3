@@ -27,7 +27,7 @@ class Client extends BaseClient
      */
     public function branchesList(string $bankAliasCode, $query = null, array $options = []): array
     {
-        $url = self::classUrl() . '/banks/' . $bankAliasCode . '/branches';
+        $url = self::classUrl() . '/' . $bankAliasCode . '/branches';
         $opts = $options + ['query' => $query];
         return $this->request('GET', $url, $opts);
     }
@@ -43,7 +43,7 @@ class Client extends BaseClient
      */
     public function getBankInfo(string $accountNumber, array $options = []): array
     {
-        $url = self::classUrl() . '/banks/search-banks-by-bank-account';
+        $url = self::classUrl() . '/search-banks-by-bank-account';
         $opts = $options + ['query' => ['account_number' => $accountNumber]];
         return $this->request('GET', $url, $opts);
     }
@@ -59,7 +59,7 @@ class Client extends BaseClient
      */
     public function personalBankList($query = null, array $options = []): array
     {
-        $url = self::classUrl() . '/banks/personal-banking';
+        $url = self::classUrl() . '/personal-banking';
         $opts = $options + ['query' => $query];
         return $this->request('GET', $url, $opts);
     }
@@ -74,7 +74,7 @@ class Client extends BaseClient
      */
     public function corporateBankList($query = null, array $options = []): array
     {
-        $url = self::classUrl() . '/banks/corporate-banking';
+        $url = self::classUrl() . '/corporate-banking';
         $opts = $options + ['query' => $query];
         return $this->request('GET', $url, $opts);
     }
