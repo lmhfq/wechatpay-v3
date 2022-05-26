@@ -1,6 +1,6 @@
 <?php
 
-namespace Lmh\WeChatPayV3\Service\Apply4Sub\SubMerchant;
+namespace Lmh\WeChatPayV3\Service\Capital\Capitallhh;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;

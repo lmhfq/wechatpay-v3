@@ -25,6 +25,7 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Pay\Transaction\Client $transaction
  * @property Pay\Partner\Transaction\Client $partnerTransaction
  * @property GoldPlan\Merchants\Client $goldPlanMerchant
+ * @property Capital\Capitallhh\Client $capital
  */
 class Application extends ServiceContainer
 {
@@ -50,5 +51,6 @@ class Application extends ServiceContainer
         Pay\Transaction\ServiceProvider::class,
         Pay\Partner\Transaction\ServiceProvider::class,
         GoldPlan\Merchants\ServiceProvider::class,
+        Capital\Capitallhh\ServiceProvider::class,
     ];
 }
