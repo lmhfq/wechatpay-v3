@@ -1,6 +1,6 @@
 <?php
 
-namespace Lmh\WeChatPayV3\Service\Capital\Capitallhh;
+namespace Lmh\WeChatPayV3\Service\Capital\Capitallhh\Bank;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -12,7 +12,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $app['capitallhh'] = function ($app) {
+        $app['banks'] = function ($app) {
             return new Client($app);
         };
     }
