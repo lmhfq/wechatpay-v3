@@ -1,6 +1,6 @@
 <?php
 
-namespace Lmh\WeChatPayV3\Service\Applyment4sub;
+namespace Lmh\WeChatPayV3\Service\Applyment4sub\Applyment;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
