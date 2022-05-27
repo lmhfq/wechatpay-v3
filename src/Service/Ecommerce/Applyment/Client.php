@@ -12,16 +12,6 @@ use Throwable;
  */
 class Client extends BaseClient
 {
-    protected static $urlName = 'ecommerce/applyments';
-
-    /**
-     * @return string
-     */
-    public static function className(): string
-    {
-        return self::$urlName;
-    }
-
     /**
      * @param string $id
      * @param null $query
