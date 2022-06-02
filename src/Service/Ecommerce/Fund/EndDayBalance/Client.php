@@ -1,6 +1,6 @@
 <?php
 
-namespace Lmh\WeChatPayV3\Service\Ecommerce\Fund\Balance;
+namespace Lmh\WeChatPayV3\Service\Ecommerce\Fund\EndDayBalance;
 
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
@@ -15,7 +15,7 @@ class Client extends BaseClient
      */
     public static function className(): string
     {
-        return 'ecommerce/fund/balance';
+        return 'ecommerce/fund/enddaybalance';
     }
 
     /**
