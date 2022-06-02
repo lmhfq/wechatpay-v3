@@ -13,6 +13,7 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Merchant\Media\Client $media
  * @property CombineTransaction\Client $combineTransaction
  * @property Ecommerce\Applyment\Client $applyment
+ * @property Ecommerce\Bill\Client $ecommerceBill
  * @property Ecommerce\ProfitSharing\Order\Client $profitSharingOrder
  * @property Ecommerce\ProfitSharing\ReturnOrder\Client $profitSharingReturnOrder
  * @property Ecommerce\ProfitSharing\FinishOrder\Client $profitSharingFinishOrder
@@ -41,6 +42,7 @@ class Application extends ServiceContainer
         Merchant\Media\ServiceProvider::class,
         CombineTransaction\ServiceProvider::class,
         Ecommerce\Applyment\ServiceProvider::class,
+        Ecommerce\Bill\ServiceProvider::class,
         Ecommerce\ProfitSharing\Order\ServiceProvider::class,
         Ecommerce\ProfitSharing\ReturnOrder\ServiceProvider::class,
         Ecommerce\ProfitSharing\FinishOrder\ServiceProvider::class,
