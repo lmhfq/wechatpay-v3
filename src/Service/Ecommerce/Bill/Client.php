@@ -14,29 +14,6 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 class Client extends BaseClient
 {
     /**
-     * @return string
-     */
-    public static function className(): string
-    {
-        return 'bill';
-    }
-
-    /**
-     * @param string|array|null $query
-     * @param array $options
-     * @return array
-     * @throws GuzzleException
-     * @throws ResultException
-     */
-    public function retrieveTradeBill($query = null, array $options = []): array
-    {
-        $url = self::classUrl() . '/tradebill';
-        $opts = $options + ['query' => $query];
-
-        return $this->request('GET', $url, $opts);
-    }
-
-    /**
      * @param string|array|null $query
      * @param array $options
      * @return array
@@ -68,7 +45,6 @@ class Client extends BaseClient
         if ($hashValue != Arr::get($body, 'hash_value')) {
             throw new HashException('账单文件哈希值错误，请尝试重新下载');
         }
-
         return $fileStream;
     }
 }
