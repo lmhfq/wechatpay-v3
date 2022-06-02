@@ -22,6 +22,7 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Ecommerce\Refund\Client $refund
  * @property Ecommerce\Fund\Withdraw\Client $withdraw
  * @property Ecommerce\Fund\Balance\Client $balance
+ * @property Ecommerce\Fund\EndDayBalance\Client $endDayBalance
  * @property Bill\Client $bill
  * @property Pay\Transaction\Client $transaction
  * @property Pay\Partner\Transaction\Client $partnerTransaction
@@ -51,6 +52,7 @@ class Application extends ServiceContainer
         Ecommerce\Refund\ServiceProvider::class,
         Ecommerce\Fund\Withdraw\ServiceProvider::class,
         Ecommerce\Fund\Balance\ServiceProvider::class,
+        Ecommerce\Fund\EndDayBalance\ServiceProvider::class,
         Bill\ServiceProvider::class,
         Pay\Transaction\ServiceProvider::class,
         Pay\Partner\Transaction\ServiceProvider::class,
