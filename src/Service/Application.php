@@ -30,6 +30,7 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Capital\Capitallhh\Area\Client $area
  * @property Capital\Capitallhh\Bank\Client $bank
  * @property Applyment4sub\Applyment\Client $subApplyment
+ * @property Transfer\Batches\Client $transfer
  */
 class Application extends ServiceContainer
 {
@@ -60,5 +61,6 @@ class Application extends ServiceContainer
         Capital\Capitallhh\Area\ServiceProvider::class,
         Capital\Capitallhh\Bank\ServiceProvider::class,
         Applyment4sub\Applyment\ServiceProvider::class,
+        Transfer\Batches\ServiceProvider::class,
     ];
 }

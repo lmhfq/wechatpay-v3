@@ -8,20 +8,6 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 trait RestfulMethods
 {
     /**
-     * @param string $id
-     * @param string $query
-     * @param array $options
-     * @return array
-     * @throws ResultException
-     */
-    protected function retrieve(string $id, $query = null, array $options = []): array
-    {
-        $url = $this->instanceUrl($id);
-        $opts = $options + ['query' => $query];
-        return $this->request('GET', $url, $opts);
-    }
-
-    /**
      * @param $id
      * @return string
      */
@@ -53,10 +39,24 @@ trait RestfulMethods
     }
 
     /**
+     * 查询
+     * @param string $id
+     * @param string $query
+     * @param array $options
+     * @return array
+     */
+    protected function retrieve(string $id, $query = null, array $options = []): array
+    {
+        $url = $this->instanceUrl($id);
+        $opts = $options + ['query' => $query];
+        return $this->request('GET', $url, $opts);
+    }
+
+    /**
+     * 提交
      * @param array $params
      * @param array $options
      * @return array
-     * @throws ResultException
      */
     protected function create(array $params, array $options = []): array
     {
@@ -66,11 +66,11 @@ trait RestfulMethods
     }
 
     /**
+     * 修改
      * @param string $id
      * @param array $params
      * @param array $options
      * @return array
-     * @throws ResultException
      */
     protected function update(string $id, array $params, array $options = []): array
     {
@@ -80,11 +80,11 @@ trait RestfulMethods
     }
 
     /**
+     * 删除
      * @param string $id
      * @param string $query
      * @param array $options
      * @return array
-     * @throws ResultException
      */
     protected function destroy(string $id, string $query, array $options = []): array
     {
