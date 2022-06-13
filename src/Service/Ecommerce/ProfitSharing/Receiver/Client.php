@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\Receiver;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 /**

@@ -45,7 +45,7 @@ trait RestfulMethods
      * @param array $options
      * @return array
      */
-    protected function retrieve(string $id, $query = null, array $options = []): array
+    public function retrieve(string $id, $query = null, array $options = []): array
     {
         $url = $this->instanceUrl($id);
         $opts = $options + ['query' => $query];
@@ -58,7 +58,7 @@ trait RestfulMethods
      * @param array $options
      * @return array
      */
-    protected function create(array $params, array $options = []): array
+    public function create(array $params, array $options = []): array
     {
         $url = self::classUrl();
         $opts = $options + ['json' => $params];
@@ -72,7 +72,7 @@ trait RestfulMethods
      * @param array $options
      * @return array
      */
-    protected function update(string $id, array $params, array $options = []): array
+    public function update(string $id, array $params, array $options = []): array
     {
         $url = self::instanceUrl($id);
         $opts = $options + ['json' => $params];
@@ -86,7 +86,7 @@ trait RestfulMethods
      * @param array $options
      * @return array
      */
-    protected function destroy(string $id, string $query, array $options = []): array
+    public function destroy(string $id, string $query, array $options = []): array
     {
         $url = self::instanceUrl($id);
         $opts = $options + ['query' => $query];

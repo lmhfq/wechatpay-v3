@@ -24,7 +24,6 @@ class Client extends BaseClient
     {
         $url = self::classUrl() . '/create';
         $opts = $options + ['json' => $params];
-
         return $this->request('POST', $url, $opts);
     }
 
@@ -35,11 +34,10 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws Throwable
      */
-    public function return(array $params, array $options = [])
+    public function return(array $params, array $options = []): array
     {
         $url = self::classUrl() . '/return';
         $opts = $options + ['json' => $params];
-
         return $this->request('POST', $url, $opts);
     }
 
@@ -54,7 +52,6 @@ class Client extends BaseClient
     {
         $url = self::classUrl() . '/cancel';
         $opts = $options + ['json' => $params];
-
         return $this->request('POST', $url, $opts);
     }
 }

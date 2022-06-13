@@ -51,7 +51,6 @@ class Client extends BaseClient
      * @param array $params
      * @param array $options
      * @return array
-     * @throws ResultException
      */
     public function create(array $params, array $options = []): array
     {
