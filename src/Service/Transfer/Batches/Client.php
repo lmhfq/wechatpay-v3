@@ -16,6 +16,13 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 class Client extends BaseClient
 {
+
+    public function create(array $params, array $options = []): array
+    {
+        $params['appid'] = $this->app['config']->app_id;
+        return parent::create($params, $options);
+    }
+
     /**
      * 微信明细单号查询明细单
      * @param string $batchId
