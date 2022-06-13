@@ -43,6 +43,7 @@ trait RestfulMethods
      * @param string $id
      * @param string $query
      * @param array $options
+     * @throws ResultException
      * @return array
      */
     public function retrieve(string $id, $query = null, array $options = []): array
@@ -56,6 +57,7 @@ trait RestfulMethods
      * 提交
      * @param array $params
      * @param array $options
+     * @throws ResultException
      * @return array
      */
     public function create(array $params, array $options = []): array
@@ -70,6 +72,7 @@ trait RestfulMethods
      * @param string $id
      * @param array $params
      * @param array $options
+     * @throws ResultException
      * @return array
      */
     public function update(string $id, array $params, array $options = []): array
@@ -84,6 +87,7 @@ trait RestfulMethods
      * @param string $id
      * @param string $query
      * @param array $options
+     * @throws ResultException
      * @return array
      */
     public function destroy(string $id, string $query, array $options = []): array

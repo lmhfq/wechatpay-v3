@@ -16,7 +16,13 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 class Client extends BaseClient
 {
-
+    /**
+     * @param array $params
+     * @param array $options
+     * @throws ResultException
+     * @return array
+     * @author lmh
+     */
     public function create(array $params, array $options = []): array
     {
         $params['appid'] = $this->app['config']->app_id;
