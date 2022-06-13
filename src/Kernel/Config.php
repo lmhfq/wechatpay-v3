@@ -20,4 +20,15 @@ use Illuminate\Support\Collection;
  */
 class Config extends Collection
 {
+    /**
+     * Get a data by key.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->get($key);
+    }
 }
