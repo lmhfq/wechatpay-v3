@@ -14,10 +14,10 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property CombineTransaction\Client $combineTransaction
  * @property Ecommerce\Applyment\Client $applyment
  * @property Ecommerce\Bill\Client $ecommerceBill
- * @property Ecommerce\ProfitSharing\Order\Client $profitSharingOrder
- * @property Ecommerce\ProfitSharing\ReturnOrder\Client $profitSharingReturnOrder
- * @property Ecommerce\ProfitSharing\FinishOrder\Client $profitSharingFinishOrder
- * @property Ecommerce\ProfitSharing\Receiver\Client $profitSharingReceiver
+ * @property Ecommerce\ProfitSharing\Order\Client $ecommerceProfitSharingOrder
+ * @property Ecommerce\ProfitSharing\ReturnOrder\Client $ecommerceProfitSharingReturnOrder
+ * @property Ecommerce\ProfitSharing\FinishOrder\Client $ecommerceProfitSharingFinishOrder
+ * @property Ecommerce\ProfitSharing\Receiver\Client $ecommerceProfitSharingReceiver
  * @property Ecommerce\Subsidy\Client $subsidy
  * @property Ecommerce\Refund\Client $refund
  * @property Ecommerce\Fund\Withdraw\Client $withdraw
@@ -31,6 +31,9 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Capital\Capitallhh\Bank\Client $bank
  * @property Applyment4sub\Applyment\Client $subApplyment
  * @property Transfer\Batches\Client $transfer
+ * @property ProfitSharing\Order\Client $profitSharingOrder
+ * @property ProfitSharing\Receiver\Client $profitSharingReceiver
+ * @property ProfitSharing\Transaction\Client $profitSharingTransaction
  */
 class Application extends ServiceContainer
 {
@@ -62,5 +65,8 @@ class Application extends ServiceContainer
         Capital\Capitallhh\Bank\ServiceProvider::class,
         Applyment4sub\Applyment\ServiceProvider::class,
         Transfer\Batches\ServiceProvider::class,
+        ProfitSharing\Order\ServiceProvider::class,
+        ProfitSharing\Receiver\ServiceProvider::class,
+        ProfitSharing\Transaction\ServiceProvider::class,
     ];
 }

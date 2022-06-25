@@ -17,16 +17,4 @@ class Client extends BaseClient
     {
         return 'ecommerce/fund/balance';
     }
-
-    /**
-     * @param string $subMechId
-     * @param string|array|null $query
-     * @param array $options
-     * @return array
-     * @throws ResultException
-     */
-    public function retrieve(string $subMechId, $query = null, array $options = []): array
-    {
-        return parent::retrieve($subMechId, $query, $options);
-    }
 }

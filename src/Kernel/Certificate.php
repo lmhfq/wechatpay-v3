@@ -138,7 +138,7 @@ class Certificate
     {
         $ttl = 12 * 3600;
         /**
-         * @var Redis $cache
+         * @var Redis $client
          */
         $client = $this->app->config->get('redisClient');
         $mchId = $this->app->config['mch_id'];

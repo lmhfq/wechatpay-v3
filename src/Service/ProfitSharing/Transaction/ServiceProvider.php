@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace Lmh\WeChatPayV3\Service\Ecommerce\ProfitSharing\Order;
+namespace Lmh\WeChatPayV3\Service\ProfitSharing\Transaction;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -12,7 +13,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $app['ecommerceProfitSharingOrder'] = function ($app) {
+        $app['profitSharingReceiver'] = function ($app) {
             return new Client($app);
         };
     }
