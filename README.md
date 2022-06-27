@@ -2,6 +2,7 @@
 
 一个很好用的的微信支付 V3 的 API
 
+[![OSCS Status](https://www.oscs1024.com/platform/badge/lmhfq/wechatpay-v3.svg?size=small)](https://www.oscs1024.com/project/lmhfq/wechatpay-v3?ref=badge_small)
 ## 安装
 
 ```
