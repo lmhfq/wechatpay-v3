@@ -13,7 +13,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $app['profitSharingReceiver'] = function ($app) {
+        $app['profitSharingTransaction'] = function ($app) {
             return new Client($app);
         };
     }
