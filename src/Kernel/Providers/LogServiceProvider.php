@@ -10,7 +10,7 @@ use function sys_get_temp_dir;
 /**
  * Class LoggingServiceProvider.
  *
- * @author overtrue <i@overtrue.me>
+ * 
  */
 class LogServiceProvider implements ServiceProviderInterface
 {

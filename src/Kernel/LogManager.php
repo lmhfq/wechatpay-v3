@@ -26,7 +26,7 @@ use function sys_get_temp_dir;
 /**
  * Class LogManager.
  *
- * @author overtrue <i@overtrue.me>
+ * 
  */
 class LogManager implements LoggerInterface
 {

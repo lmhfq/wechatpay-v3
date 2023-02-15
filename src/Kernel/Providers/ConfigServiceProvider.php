@@ -18,7 +18,7 @@ use Pimple\ServiceProviderInterface;
 /**
  * Class ConfigServiceProvider.
  *
- * @author overtrue <i@overtrue.me>
+ * 
  */
 class ConfigServiceProvider implements ServiceProviderInterface
 {
