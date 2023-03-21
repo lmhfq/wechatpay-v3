@@ -18,11 +18,6 @@ use Throwable;
 
 class Client extends BaseClient
 {
-    public static function className(): string
-    {
-        return 'pay/partner/transactions';
-    }
-
     /**
      * @param array $params
      * @param array $options

@@ -17,11 +17,6 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 
 class Client extends BaseClient
 {
-    public static function className(): string
-    {
-        return 'pay/transactions';
-    }
-
     /**
      * @param array $params
      * @param array $options

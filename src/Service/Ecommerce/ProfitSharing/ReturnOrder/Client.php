@@ -29,7 +29,6 @@ class Client extends BaseClient
     {
         $url = self::classUrl();
         $opts = $options + ['query' => $query];
-
         return $this->request('GET', $url, $opts);
     }
 

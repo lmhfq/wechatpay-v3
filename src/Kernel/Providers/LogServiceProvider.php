@@ -3,6 +3,7 @@
 namespace Lmh\WeChatPayV3\Kernel\Providers;
 
 use Lmh\WeChatPayV3\Kernel\LogManager;
+use Lmh\WeChatPayV3\Kernel\ServiceContainer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use function sys_get_temp_dir;
@@ -10,7 +11,7 @@ use function sys_get_temp_dir;
 /**
  * Class LoggingServiceProvider.
  *
- * 
+ *
  */
 class LogServiceProvider implements ServiceProviderInterface
 {
@@ -25,7 +26,13 @@ class LogServiceProvider implements ServiceProviderInterface
     public function register(Container $pimple)
     {
         !isset($pimple['log']) && $pimple['log'] = function ($app) {
+            /**
+             * @var $app ServiceContainer
+             */
             $config = $this->formatLogConfig($app);
+            if (!empty($config)) {
+                $app->rebind('config', $app['config']->merge($config));
+            }
             return new LogManager($app);
         };
 
@@ -34,11 +41,13 @@ class LogServiceProvider implements ServiceProviderInterface
 
     public function formatLogConfig($app): array
     {
+
         if (!empty($app['config']->get('log')['channels'])) {
             return $app['config']->get('log');
         }
 
         if (empty($app['config']->get('log'))) {
+
             return [
                 'log' => [
                     'default' => 'null',

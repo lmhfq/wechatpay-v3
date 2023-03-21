@@ -66,7 +66,11 @@ class BaseClient
             } else {
                 $result['message'] = $exception->getMessage();
             }
-            throw new ResultException($result['message'] ?? '', $result['code'] ?? '');
+            $message = $result['message'] ?? $exception->getMessage();
+            if (($pos = mb_strpos($message, '映射到字段')) !== false) {
+                $message = mb_substr($message, $pos + 5);
+            }
+            throw new ResultException($message, $result['code'] ?? '');
         }
         return $this->castResponse($response);
     }
@@ -114,7 +118,7 @@ class BaseClient
         return function (callable $handler) {
             return function (
                 RequestInterface $request,
-                array $options
+                array            $options
             ) use ($handler) {
                 $encodeParams = Arr::get($options, 'encode_params', []);
                 if (!empty($encodeParams)) {
@@ -179,7 +183,7 @@ class BaseClient
         return function (callable $handler) {
             return function (
                 RequestInterface $request,
-                array $options
+                array            $options
             ) use ($handler) {
                 $request = $request->withHeader('Accept', 'application/json');
                 $auth = $this->authHeader($request, $options);
@@ -200,7 +204,7 @@ class BaseClient
         return function (callable $handler) {
             return function (
                 RequestInterface $request,
-                array $options
+                array            $options
             ) use ($handler) {
                 /** @var Promise $promise */
                 $promise = $handler($request, $options);
@@ -225,6 +229,7 @@ class BaseClient
     protected function logMiddleware(): Closure
     {
         $log = $this->app['config']->get('log');
+
         if (isset($log['logMiddleware'])) {
             return $log['logMiddleware'];
         }

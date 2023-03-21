@@ -63,7 +63,7 @@ class ServiceContainer extends Container
     /**
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         $base = [
             // http://docs.guzzlephp.org/en/stable/request-options.html
@@ -89,7 +89,7 @@ class ServiceContainer extends Container
      * @param string $id
      * @param mixed $value
      */
-    public function rebind($id, $value)
+    public function rebind(string $id, $value)
     {
         $this->offsetUnset($id);
         $this->offsetSet($id, $value);
@@ -98,8 +98,7 @@ class ServiceContainer extends Container
     /**
      * Magic get access.
      *
-     * @param string $id
-     *
+     * @param $name
      * @return mixed
      */
     public function __get($name)
@@ -113,7 +112,7 @@ class ServiceContainer extends Container
      * @param string $id
      * @param mixed $value
      */
-    public function __set($id, $value)
+    public function __set(string $id, $value)
     {
         $this->offsetSet($id, $value);
     }
