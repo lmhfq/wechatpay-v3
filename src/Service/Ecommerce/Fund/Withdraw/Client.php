@@ -20,6 +20,7 @@ class Client extends BaseClient
     }
 
     /**
+     * 二级商户查询预约提现状态
      * @param string $id
      * @param string|array|null $query
      * @param array $options
@@ -27,12 +28,13 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function retrieve(string $id, $query = null, array $options = []): array
+    public function queryByWithdrawId(string $id, $query = null, array $options = []): array
     {
         return parent::retrieve($id, $query, $options);
     }
 
     /**
+     * 二级商户查询预约提现状态
      * @param string $outTradeNo
      * @param string|array|null $query
      * @param array $options
@@ -47,7 +49,9 @@ class Client extends BaseClient
         return $this->request('GET', $url, $opts);
     }
 
+
     /**
+     * 二级商户预约提现
      * @param array $params
      * @param array $options
      * @return array

@@ -54,7 +54,7 @@ class Client extends BaseClient
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function retrieveApplication(string $subMchId, string $applicationNo, $query = null, array $options = []): array
+    public function retrieveSettlementResult(string $subMchId, string $applicationNo, $query = null, array $options = []): array
     {
         $url = self::classUrl() . '/' . $subMchId . '/application' . $applicationNo;
         $opts = $options + ['query' => $query];
