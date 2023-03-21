@@ -17,14 +17,6 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 class Client extends BaseClient
 {
     /**
-     * @return string
-     */
-    public static function className(): string
-    {
-        return 'goldplan/merchants';
-    }
-
-    /**
      * 点金计划管理API
      * @param array $params
      * @param array $options

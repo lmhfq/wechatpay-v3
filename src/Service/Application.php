@@ -36,6 +36,7 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property ProfitSharing\Receiver\Client $profitSharingReceiver
  * @property ProfitSharing\Transaction\Client $profitSharingTransaction
  * @property MerchantService\Complaint\Client $merchantService
+ * @property MchOperate\Risk\WithdrawlApply\Client $riskWithdraw
  */
 class Application extends ServiceContainer
 {
@@ -72,5 +73,6 @@ class Application extends ServiceContainer
         ProfitSharing\Receiver\ServiceProvider::class,
         ProfitSharing\Transaction\ServiceProvider::class,
         MerchantService\Complaint\ServiceProvider::class,
+        MchOperate\Risk\WithdrawlApply\ServiceProvider::class,
     ];
 }
