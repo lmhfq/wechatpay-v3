@@ -54,7 +54,6 @@ trait RestfulMethods
     }
 
     /**
-     * 提交
      * @param array $params
      * @param array $options
      * @throws ResultException
