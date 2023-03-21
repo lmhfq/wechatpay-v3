@@ -41,12 +41,12 @@ trait RestfulMethods
     /**
      * 查询
      * @param string $id
-     * @param string $query
+     * @param string|null $query
      * @param array $options
-     * @throws ResultException
      * @return array
+     * @throws ResultException
      */
-    public function retrieve(string $id, $query = null, array $options = []): array
+    public function retrieve(string $id, string $query = null, array $options = []): array
     {
         $url = $this->instanceUrl($id);
         $opts = $options + ['query' => $query];

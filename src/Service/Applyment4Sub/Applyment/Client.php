@@ -1,6 +1,6 @@
 <?php
 
-namespace Lmh\WeChatPayV3\Service\Applyment4sub\Applyment;
+namespace Lmh\WeChatPayV3\Service\Applyment4Sub\Applyment;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
@@ -16,10 +16,11 @@ class Client extends BaseClient
      */
     public static function className(): string
     {
-        return 'applyment';
+        return 'applyment4sub/applyment';
     }
 
     /**
+     * 查询申请单状态API
      * @param string $businessCode
      * @param null $query
      * @param array $options

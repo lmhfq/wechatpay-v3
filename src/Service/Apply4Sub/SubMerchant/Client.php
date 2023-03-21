@@ -13,32 +13,51 @@ use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 class Client extends BaseClient
 {
     /**
-     * @param string $subMerchantId
+     * 查询结算账户
+     * @param string $subMchId
      * @param null $query
      * @param array $options
      * @return array
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function retrieveSettlement(string $subMerchantId, $query = null, array $options = []): array
+    public function retrieveSettlement(string $subMchId, $query = null, array $options = []): array
     {
-        $url = self::classUrl() . '/' . $subMerchantId . '/settlement';
+        $url = self::classUrl() . '/' . $subMchId . '/settlement';
         $opts = $options + ['query' => $query];
         return $this->request('GET', $url, $opts);
     }
 
     /**
-     * @param string $subMerchantId
+     * 修改结算账户
+     * @param string $subMchId
      * @param array $params
      * @param array $options
      * @return array
      * @throws GuzzleException
      * @throws ResultException
      */
-    public function updateSettlement(string $subMerchantId, array $params, array $options = []): array
+    public function modifySettlement(string $subMchId, array $params, array $options = []): array
     {
-        $url = self::classUrl() . '/' . $subMerchantId . '/modify-settlement';
+        $url = self::classUrl() . '/' . $subMchId . '/modify-settlement';
         $opts = $options + ['json' => $params];
         return $this->request('POST', $url, $opts);
+    }
+
+    /**
+     * 查询结算账户修改申请状态
+     * @param string $subMchId
+     * @param string $applicationNo
+     * @param null $query
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     */
+    public function retrieveApplication(string $subMchId, string $applicationNo, $query = null, array $options = []): array
+    {
+        $url = self::classUrl() . '/' . $subMchId . '/application' . $applicationNo;
+        $opts = $options + ['query' => $query];
+        return $this->request('GET', $url, $opts);
     }
 }

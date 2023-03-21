@@ -10,6 +10,8 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Certificate\Client $certificate
  * @property Notify\Client $notify
  * @property Apply4Sub\SubMerchant\Client $subMerchant
+ * @property Applyment4Sub\Applyment\Client $subApplyment
+ * @property Apply4Subject\Applyment\Client $subjectApplyment
  * @property Merchant\Media\Client $media
  * @property CombineTransaction\Client $combineTransaction
  * @property Ecommerce\Applyment\Client $applyment
@@ -29,7 +31,6 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property GoldPlan\Merchants\Client $goldPlanMerchant
  * @property Capital\Capitallhh\Area\Client $area
  * @property Capital\Capitallhh\Bank\Client $bank
- * @property Applyment4sub\Applyment\Client $subApplyment
  * @property Transfer\Batches\Client $transfer
  * @property ProfitSharing\Order\Client $profitSharingOrder
  * @property ProfitSharing\Receiver\Client $profitSharingReceiver
@@ -45,6 +46,8 @@ class Application extends ServiceContainer
         Certificate\ServiceProvider::class,
         Notify\ServiceProvider::class,
         Apply4Sub\SubMerchant\ServiceProvider::class,
+        Applyment4Sub\Applyment\ServiceProvider::class,
+        Apply4Subject\Applyment\ServiceProvider::class,
         Merchant\Media\ServiceProvider::class,
         CombineTransaction\ServiceProvider::class,
         Ecommerce\Applyment\ServiceProvider::class,
@@ -64,7 +67,6 @@ class Application extends ServiceContainer
         GoldPlan\Merchants\ServiceProvider::class,
         Capital\Capitallhh\Area\ServiceProvider::class,
         Capital\Capitallhh\Bank\ServiceProvider::class,
-        Applyment4sub\Applyment\ServiceProvider::class,
         Transfer\Batches\ServiceProvider::class,
         ProfitSharing\Order\ServiceProvider::class,
         ProfitSharing\Receiver\ServiceProvider::class,
