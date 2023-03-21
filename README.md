@@ -11,7 +11,7 @@ composer require lmh/wechatpay-v3
 
 ## 使用
 ```
- $payment =  Factory::app($config);
+ $payment = Factory::app($config);
  $payment->transaction->h5([]);
 ```
 
