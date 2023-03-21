@@ -20,7 +20,24 @@ class Client extends BaseClient
     }
 
     /**
+     * 提交申请单
+     * @see https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter11_1_1.shtml
+     * @param array $params
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
+     * @throws ResultException
+     */
+    public function create(array $params, array $options = []): array
+    {
+        $url = self::classUrl() . '/';
+        $opts = $options + ['json' => $params];
+        return $this->request('POST', $url, $opts);
+    }
+
+    /**
      * 查询申请单状态API
+     * @see https://pay.weixin.qq.com/wiki/doc/apiv3_partner/apis/chapter11_1_2.shtml
      * @param string $businessCode
      * @param null $query
      * @param array $options

@@ -45,6 +45,28 @@ class Client extends BaseClient
         return $this->request('POST', $url, $options);
     }
 
+
+    /**
+     * @param $appId
+     * @param $prepayId
+     * @param null $timestamp
+     * @return array
+     */
+    public function jsApiPayInfo($appId, $prepayId, $timestamp = null): array
+    {
+        $payload = [
+            'appId' => $appId,
+            'timeStamp' => $timestamp ? strval($timestamp) : strval(time()),
+            'nonceStr' => Str::random(32),
+            'package' => 'prepay_id=' . $prepayId,
+        ];
+        $payload += [
+            'signType' => 'RSA',
+            'paySign' => $this->sign($payload),
+        ];
+        return $payload;
+    }
+
     /**
      * @param $appId
      * @param $prepayId
@@ -66,27 +88,6 @@ class Client extends BaseClient
             'paySign' => $this->sign($payload),
         ];
 
-        return $payload;
-    }
-
-    /**
-     * @param $appId
-     * @param $prepayId
-     * @param null $timestamp
-     * @return array
-     */
-    public function jsApiPayInfo($appId, $prepayId, $timestamp = null): array
-    {
-        $payload = [
-            'appId' => $appId,
-            'timeStamp' => $timestamp ? strval($timestamp) : strval(time()),
-            'nonceStr' => Str::random(32),
-            'package' => 'prepay_id=' . $prepayId,
-        ];
-        $payload += [
-            'signType' => 'RSA',
-            'paySign' => $this->sign($payload),
-        ];
         return $payload;
     }
 }

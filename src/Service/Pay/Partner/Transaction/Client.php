@@ -61,31 +61,6 @@ class Client extends BaseClient
         return $this->request('POST', $url, $options);
     }
 
-
-    /**
-     * @param $appId
-     * @param $prepayId
-     * @param $subMerchantId
-     * @param null $timestamp
-     * @return array
-     */
-    public function appPayInfo($appId, $prepayId, $subMerchantId, $timestamp = null): array
-    {
-        $payload = [
-            'appId' => $appId,
-            'timeStamp' => $timestamp ? strval($timestamp) : strval(time()),
-            'nonceStr' => Str::random(32),
-            'prepayId' => $prepayId,
-        ];
-        $payload += [
-            'partnerId' => $subMerchantId,
-            'packageValue' => 'Sign=WXPay',
-            'paySign' => $this->sign($payload),
-        ];
-
-        return $payload;
-    }
-
     /**
      * @param $appId
      * @param $prepayId
@@ -107,6 +82,29 @@ class Client extends BaseClient
         return $payload;
     }
 
+    /**
+     * @param $appId
+     * @param $prepayId
+     * @param $subMchId
+     * @param null $timestamp
+     * @return array
+     */
+    public function appPayInfo($appId, $prepayId, $subMchId, $timestamp = null): array
+    {
+        $payload = [
+            'appId' => $appId,
+            'timeStamp' => $timestamp ? strval($timestamp) : strval(time()),
+            'nonceStr' => Str::random(32),
+            'prepayId' => $prepayId,
+        ];
+        $payload += [
+            'partnerId' => $subMchId,
+            'packageValue' => 'Sign=WXPay',
+            'paySign' => $this->sign($payload),
+        ];
+
+        return $payload;
+    }
 
     /**
      * @param string $outTradeNo
