@@ -9,6 +9,12 @@
 composer require lmh/wechatpay-v3
 ```
 
+## 使用
+```
+ $payment =  Factory::app($config);
+ $payment->transaction->h5([]);
+```
+
 ### 敏感参数加解密
 
 在设置请求的参数($query 或 $params)时，无需手动对敏感参数进行加解密。仅需要在 $options 参数中申明需要加解密的参数（支持点运算符）即可。 例如：
