@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Time: 上午9:18
  */
 
-namespace Lmh\WeChatPayV3\Service\GoldPlan\Merchants;
+namespace Lmh\WeChatPayV3\Service\GoldPlan\Merchant;
 
 
 use GuzzleHttp\Exception\GuzzleException;

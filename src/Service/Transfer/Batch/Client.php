@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Time: 下午3:23
  */
 
-namespace Lmh\WeChatPayV3\Service\Transfer\Batches;
+namespace Lmh\WeChatPayV3\Service\Transfer\Batch;
 
 
 use GuzzleHttp\Exception\GuzzleException;

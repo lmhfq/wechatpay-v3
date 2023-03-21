@@ -3,24 +3,23 @@ declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: lmh <lmh@weiyian.com>
- * Date: 2022/6/9
- * Time: 下午3:23
+ * Date: 2021/5/12
+ * Time: 上午9:31
  */
 
-namespace Lmh\WeChatPayV3\Service\Transfer\Batches;
-
+namespace Lmh\WeChatPayV3\Service\GoldPlan\Merchant;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProvider  implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}.
      */
     public function register(Container $app)
     {
-        $app['transfer'] = function ($app) {
+        $app['goldPlanMerchant'] = function ($app) {
             return new Client($app);
         };
     }

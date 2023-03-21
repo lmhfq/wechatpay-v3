@@ -28,10 +28,10 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Bill\Client $bill
  * @property Pay\Transaction\Client $transaction
  * @property Pay\Partner\Transaction\Client $partnerTransaction
- * @property GoldPlan\Merchants\Client $goldPlanMerchant
+ * @property GoldPlan\Merchant\Client $goldPlanMerchant
  * @property Capital\Capitallhh\Area\Client $area
  * @property Capital\Capitallhh\Bank\Client $bank
- * @property Transfer\Batches\Client $transfer
+ * @property Transfer\Batch\Client $transfer
  * @property ProfitSharing\Order\Client $profitSharingOrder
  * @property ProfitSharing\Receiver\Client $profitSharingReceiver
  * @property ProfitSharing\Transaction\Client $profitSharingTransaction
@@ -65,10 +65,10 @@ class Application extends ServiceContainer
         Bill\ServiceProvider::class,
         Pay\Transaction\ServiceProvider::class,
         Pay\Partner\Transaction\ServiceProvider::class,
-        GoldPlan\Merchants\ServiceProvider::class,
+        GoldPlan\Merchant\ServiceProvider::class,
         Capital\Capitallhh\Area\ServiceProvider::class,
         Capital\Capitallhh\Bank\ServiceProvider::class,
-        Transfer\Batches\ServiceProvider::class,
+        Transfer\Batch\ServiceProvider::class,
         ProfitSharing\Order\ServiceProvider::class,
         ProfitSharing\Receiver\ServiceProvider::class,
         ProfitSharing\Transaction\ServiceProvider::class,

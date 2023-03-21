@@ -70,7 +70,7 @@ class BaseClient
             if (($pos = mb_strpos($message, '映射到字段')) !== false) {
                 $message = mb_substr($message, $pos + 5);
             } elseif (($pos = mb_strpos($message, '映射到值字段')) !== false) {
-                $message = mb_substr($message, $pos + 5);
+                $message = mb_substr($message, $pos + 6);
             }
             throw new ResultException($message, $result['code'] ?? '');
         }
