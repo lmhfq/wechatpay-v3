@@ -12,10 +12,10 @@
     "ext-json": "*",
     "ext-curl": "*",
     "ext-openssl": "*",
-    "ext-redis": "*"
+    "ext-redis": "*",
     "guzzlehttp/guzzle": "^6.5",
     "pimple/pimple": "^3.0",
-    "illuminate/support": "^5.8",
+    "illuminate/support": "^9.0 || ^10.0 || ^11.0",
     "monolog/monolog": "^1.22 || ^2.0"
   },
   "require-dev": {
