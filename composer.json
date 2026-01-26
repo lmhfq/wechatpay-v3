@@ -1,7 +1,7 @@
 {
   "name": "lmh/wechatpay-v3",
   "description": "用于框架的微信支付 API v3 组件",
-  "version": "4.1.7",
+  "version": "4.1.8",
   "authors": [
     {
       "name": "lmh",
