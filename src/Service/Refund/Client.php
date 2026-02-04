@@ -8,7 +8,7 @@ class Client extends BaseClient
 {
     public static function className(): string
     {
-        return 'domestic/refunds';
+        return 'refund/domestic/refunds';
     }
 
     /**
