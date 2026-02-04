@@ -66,6 +66,7 @@ class Application extends ServiceContainer
         Bill\ServiceProvider::class,
         Pay\Transaction\ServiceProvider::class,
         Pay\Partner\Transaction\ServiceProvider::class,
+        Refund\ServiceProvider::class,
         GoldPlan\Merchant\ServiceProvider::class,
         Capital\Capitallhh\Area\ServiceProvider::class,
         Capital\Capitallhh\Bank\ServiceProvider::class,
