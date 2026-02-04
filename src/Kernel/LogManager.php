@@ -380,9 +380,9 @@ class LogManager implements LoggerInterface
      *
      * @throws Exception
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
-        return $this->driver()->error($message, $context);
+         $this->driver()->error($message, $context);
     }
 
     /**
