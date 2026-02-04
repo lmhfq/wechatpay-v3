@@ -9,13 +9,13 @@ use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Psr7;
-use Illuminate\Support\Arr;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\SignInvalidException;
 use Lmh\WeChatPayV3\Kernel\Traits\HasHttpRequests;
 use Lmh\WeChatPayV3\Kernel\Traits\ResponseCastable;
 use Lmh\WeChatPayV3\Kernel\Traits\RestfulMethods;
 use Lmh\WeChatPayV3\Kernel\Traits\SignatureGenerator;
+use Lmh\WeChatPayV3\Kernel\Utils\ArrUtil;
 use Lmh\WeChatPayV3\Kernel\Utils\RsaUtil;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -122,7 +122,7 @@ class BaseClient
                 RequestInterface $request,
                 array            $options
             ) use ($handler) {
-                $encodeParams = Arr::get($options, 'encode_params', []);
+                $encodeParams = ArrUtil::get($options, 'encode_params', []);
                 if (!empty($encodeParams)) {
                     $body = $request->getBody()->getContents();
                     $request->getBody()->rewind();
@@ -131,13 +131,13 @@ class BaseClient
                     $serialNo = $certificate->getAvailableSerialNo();
                     if (!empty($params)) {
                         foreach ($encodeParams as $encodeParam) {
-                            $value = Arr::get($params, $encodeParam);
+                            $value = ArrUtil::get($params, $encodeParam);
                             if (!is_null($value)) {
                                 $encrypted = RsaUtil::publicEncrypt(
                                     $value,
                                     $certificate->getPublicKey($serialNo)
                                 );
-                                Arr::set($params, $encodeParam, $encrypted);
+                                ArrUtil::set($params, $encodeParam, $encrypted);
                             }
                         }
                         $request = $request->withBody(Psr7\stream_for(json_encode($params)));
@@ -149,20 +149,20 @@ class BaseClient
                 $promise = $handler($request, $options);
                 return $promise->then(
                     function (ResponseInterface $response) use ($options) {
-                        $decodeParams = Arr::get($options, 'decode_params', []);
+                        $decodeParams = ArrUtil::get($options, 'decode_params', []);
                         if (!empty($decodeParams)) {
                             $response->getBody()->rewind();
                             $body = $response->getBody()->getContents();
                             $params = json_decode($body, true);
                             if (!empty($params)) {
                                 foreach ($decodeParams as $decodeParam) {
-                                    $value = Arr::get($params, $decodeParam);
+                                    $value = ArrUtil::get($params, $decodeParam);
                                     if (!is_null($value)) {
                                         $decryptedValue = RsaUtil::privateDecrypt(
                                             $value,
                                             $this->app->config->get('private_key')
                                         );
-                                        Arr::set($params, $decodeParam, $decryptedValue);
+                                        ArrUtil::set($params, $decodeParam, $decryptedValue);
                                     }
                                 }
                                 $response = $response->withBody(Psr7\stream_for(json_encode($params)));
