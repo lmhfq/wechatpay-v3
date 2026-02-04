@@ -2,10 +2,10 @@
 
 namespace Lmh\WeChatPayV3\Kernel\Traits;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\Certificate;
 use Lmh\WeChatPayV3\Kernel\Exceptions\SignInvalidException;
-use Lmh\WeChatPayV3\Kernel\Utils\ArrUtil;
-use Lmh\WeChatPayV3\Kernel\Utils\StrUtil;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -27,8 +27,8 @@ trait SignatureGenerator
             'method' => strtoupper($request->getMethod()),
             'uri' => $uri,
             'timestamp' => time(),
-            'nonce_str' => strtoupper(StrUtil::random(32)),
-            'body' => ArrUtil::get($options, 'sign_payload', function () use ($request) {
+            'nonce_str' => strtoupper(Str::random(32)),
+            'body' => Arr::get($options, 'sign_payload', function () use ($request) {
                 $body = $request->getBody()->getContents();
                 $request->getBody()->rewind();
 
@@ -74,13 +74,13 @@ trait SignatureGenerator
         $response->getBody()->rewind();
         $headers = $response->getHeaders();
         $payload = [
-            'timestamp' => ArrUtil::get($headers, 'Wechatpay-Timestamp.0'),
-            'nonce_str' => ArrUtil::get($headers, 'Wechatpay-Nonce.0'),
+            'timestamp' => Arr::get($headers, 'Wechatpay-Timestamp.0'),
+            'nonce_str' => Arr::get($headers, 'Wechatpay-Nonce.0'),
             'body' => $response->getBody()->getContents(),
         ];
         $signData = implode("\n", $payload) . "\n";
-        $responseSign = base64_decode(ArrUtil::get($headers, 'Wechatpay-Signature.0'));
-        $serialNo = ArrUtil::get($headers, 'Wechatpay-Serial.0');
+        $responseSign = base64_decode(Arr::get($headers, 'Wechatpay-Signature.0'));
+        $serialNo = Arr::get($headers, 'Wechatpay-Serial.0');
         if (empty($serialNo)) {
             if (substr(strval($response->getStatusCode()), 0, 1) == '2') {
                 throw new SignInvalidException('响应中不存在证书序列号');

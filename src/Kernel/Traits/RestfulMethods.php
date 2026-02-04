@@ -2,8 +2,8 @@
 
 namespace Lmh\WeChatPayV3\Kernel\Traits;
 
+use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Lmh\WeChatPayV3\Kernel\Utils\StrUtil;
 
 trait RestfulMethods
 {
@@ -33,7 +33,7 @@ trait RestfulMethods
         $classes = explode('\\', $className);
         $classes = array_slice($classes, 3, -1);
         foreach ($classes as $key => $val) {
-            $classes[$key] = $key == count($classes) - 1 ? StrUtil::plural(StrUtil::snake($val)) : strtolower($val);
+            $classes[$key] = $key == count($classes) - 1 ? Str::plural(Str::snake($val)) : strtolower($val);
         }
         return implode('/', $classes);
     }
@@ -56,8 +56,8 @@ trait RestfulMethods
     /**
      * @param array $params
      * @param array $options
-     * @return array
      * @throws ResultException
+     * @return array
      */
     public function create(array $params, array $options = []): array
     {
@@ -71,8 +71,8 @@ trait RestfulMethods
      * @param string $id
      * @param array $params
      * @param array $options
-     * @return array
      * @throws ResultException
+     * @return array
      */
     public function update(string $id, array $params, array $options = []): array
     {
@@ -86,8 +86,8 @@ trait RestfulMethods
      * @param string $id
      * @param string $query
      * @param array $options
-     * @return array
      * @throws ResultException
+     * @return array
      */
     public function destroy(string $id, string $query, array $options = []): array
     {

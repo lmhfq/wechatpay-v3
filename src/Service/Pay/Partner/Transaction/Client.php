@@ -11,9 +11,9 @@ namespace Lmh\WeChatPayV3\Service\Pay\Partner\Transaction;
 
 
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Str;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
-use Lmh\WeChatPayV3\Kernel\Utils\StrUtil;
 use Throwable;
 
 class Client extends BaseClient
@@ -72,7 +72,7 @@ class Client extends BaseClient
         $payload = [
             'appId' => $appId,
             'timeStamp' => $timestamp ? strval($timestamp) : strval(time()),
-            'nonceStr' => StrUtil::random(32),
+            'nonceStr' => Str::random(32),
             'package' => 'prepay_id=' . $prepayId,
         ];
         $payload += [
@@ -94,7 +94,7 @@ class Client extends BaseClient
         $payload = [
             'appId' => $appId,
             'timeStamp' => $timestamp ? strval($timestamp) : strval(time()),
-            'nonceStr' => StrUtil::random(32),
+            'nonceStr' => Str::random(32),
             'prepayId' => $prepayId,
         ];
         $payload += [
