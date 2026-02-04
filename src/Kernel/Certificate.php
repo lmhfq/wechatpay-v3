@@ -57,8 +57,10 @@ class Certificate
                 return $serialNo;
             }
         }
+
+
         /** @var Client $certificateClient */
-        $certificateClient = $this->app['certificate'];
+        $certificateClient = $this->app['certificate'];var_dump($certificateClient->all());exit;
         $certificates = collect(Arr::get($certificateClient->all(), 'data'));
         if ($certificates->isEmpty()) {
             throw new SignInvalidException('没有可用的平台证书列表');

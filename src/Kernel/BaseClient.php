@@ -127,15 +127,20 @@ class BaseClient
                     $body = $request->getBody()->getContents();
                     $request->getBody()->rewind();
                     $params = json_decode($body, true);
-                    $certificate = (new Certificate($this->app));
-                    $serialNo = $certificate->getAvailableSerialNo();
+                    if ($this->app->config->get('public_key')) {
+                        $publicKey = $this->app->config->get('public_key');
+                    } else {
+                        $certificate = (new Certificate($this->app));
+                        $serialNo = $certificate->getAvailableSerialNo();
+                        $publicKey = $certificate->getPublicKey($serialNo);
+                    }
                     if (!empty($params)) {
                         foreach ($encodeParams as $encodeParam) {
                             $value = Arr::get($params, $encodeParam);
                             if (!is_null($value)) {
                                 $encrypted = RsaUtil::publicEncrypt(
                                     $value,
-                                    $certificate->getPublicKey($serialNo)
+                                    $publicKey
                                 );
                                 Arr::set($params, $encodeParam, $encrypted);
                             }
