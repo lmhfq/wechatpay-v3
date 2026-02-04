@@ -16,8 +16,8 @@
     "ext-redis": "*",
     "guzzlehttp/guzzle": "^6.5|| ^7.10",
     "pimple/pimple": "^3.0",
-    "illuminate/support": "^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-    "monolog/monolog": "^1.22 || ^2.0"
+    "monolog/monolog": "^1.22 || ^2.0",
+    "doctrine/inflector": "^1.4"
   },
   "require-dev": {
     "phpunit/phpunit": ">=7.5"
