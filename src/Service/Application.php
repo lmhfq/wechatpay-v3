@@ -21,13 +21,14 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property Ecommerce\ProfitSharing\FinishOrder\Client $ecommerceProfitSharingFinishOrder
  * @property Ecommerce\ProfitSharing\Receiver\Client $ecommerceProfitSharingReceiver
  * @property Ecommerce\Subsidy\Client $subsidy
- * @property Ecommerce\Refund\Client $refund
+ * @property Ecommerce\Refund\Client $ecommerceRefund
  * @property Ecommerce\Fund\Withdraw\Client $withdraw
  * @property Ecommerce\Fund\Balance\Client $balance
  * @property Ecommerce\Fund\EndDayBalance\Client $endDayBalance
  * @property Bill\Client $bill
  * @property Pay\Transaction\Client $transaction
  * @property Pay\Partner\Transaction\Client $partnerTransaction
+ * @property Refund\Client $refund
  * @property GoldPlan\Merchant\Client $goldPlanMerchant
  * @property Capital\Capitallhh\Area\Client $area
  * @property Capital\Capitallhh\Bank\Client $bank

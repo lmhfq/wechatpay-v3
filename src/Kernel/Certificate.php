@@ -3,13 +3,13 @@
 namespace Lmh\WeChatPayV3\Kernel;
 
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Lmh\WeChatPayV3\Kernel\Exceptions\DecryptException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\InvalidArgumentException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\RuntimeException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\SignInvalidException;
 use Lmh\WeChatPayV3\Kernel\Utils\AesUtil;
+use Lmh\WeChatPayV3\Kernel\Utils\ArrUtil;
 use Lmh\WeChatPayV3\Service\Certificate\Client;
 use Pimple\Container;
 use Redis;
@@ -59,25 +59,25 @@ class Certificate
         }
         /** @var Client $certificateClient */
         $certificateClient = $this->app['certificate'];
-        $certificates = collect(Arr::get($certificateClient->all(), 'data'));
+        $certificates = collect(ArrUtil::get($certificateClient->all(), 'data'));
         if ($certificates->isEmpty()) {
             throw new SignInvalidException('没有可用的平台证书列表');
         }
         $certificate = $certificates->reduce(function ($carry, $certificate) {
-            if (empty($carryExpireTime = Arr::get($carry, 'expire_time'))) {
+            if (empty($carryExpireTime = ArrUtil::get($carry, 'expire_time'))) {
                 return $certificate;
             }
             $carryExpireTime = Carbon::createFromTimeString($carryExpireTime);
-            $expireTime = Carbon::createFromTimeString(Arr::get($certificate, 'expire_time'));
+            $expireTime = Carbon::createFromTimeString(ArrUtil::get($certificate, 'expire_time'));
 
             return $carryExpireTime->gt($expireTime) ? $carryExpireTime : $expireTime;
         });
         if (!$certificate) {
             throw new SignInvalidException('没有可用的平台证书');
         }
-        $serialNo = Arr::get($certificate, 'serial_no');
+        $serialNo = ArrUtil::get($certificate, 'serial_no');
         $aesKey = $this->app['config']->get('aes_key');
-        $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
+        $publicKey = $this->decryptCertificate(ArrUtil::get($certificate, 'encrypt_certificate'), $aesKey);
         if ($client != null && $client instanceof Redis) {
             $client->set($this->getSerialNoCacheKey($mchId), $serialNo, $ttl);
             $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);
@@ -104,9 +104,9 @@ class Certificate
      */
     private function decryptCertificate($encryptCertificate, $aesKey)
     {
-        $associatedData = Arr::get($encryptCertificate, 'associated_data');
-        $nonceStr = Arr::get($encryptCertificate, 'nonce');
-        $cipherText = Arr::get($encryptCertificate, 'ciphertext');
+        $associatedData = ArrUtil::get($encryptCertificate, 'associated_data');
+        $nonceStr = ArrUtil::get($encryptCertificate, 'nonce');
+        $cipherText = ArrUtil::get($encryptCertificate, 'ciphertext');
         $publicKey = (new AesUtil($aesKey))->decryptAES256GCM($associatedData, $nonceStr, $cipherText);
         if (!$publicKey) {
             throw new DecryptException('解密证书失败');
@@ -150,13 +150,13 @@ class Certificate
         }
         /** @var Client $certificateClient */
         $certificateClient = $this->app['certificate'];
-        $certificates = collect(Arr::get($certificateClient->all(), 'data'));
+        $certificates = collect(ArrUtil::get($certificateClient->all(), 'data'));
         $certificate = $certificates->firstWhere('serial_no', '=', $serialNo);
         if (empty($certificate)) {
             throw new SignInvalidException('证书序列号不存在于可用的证书列表中');
         }
         $aesKey = $this->app->config->get('aes_key');
-        $publicKey = $this->decryptCertificate(Arr::get($certificate, 'encrypt_certificate'), $aesKey);
+        $publicKey = $this->decryptCertificate(ArrUtil::get($certificate, 'encrypt_certificate'), $aesKey);
         if ($client != null && $client instanceof Redis) {
             $client->set($this->getSerialNoCacheKey($mchId), $serialNo, $ttl);
             $client->set($this->getPublicKeyCacheKey($serialNo), $publicKey, $ttl);

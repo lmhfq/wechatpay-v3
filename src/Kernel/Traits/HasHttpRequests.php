@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
-use Illuminate\Support\Arr;
+use Lmh\WeChatPayV3\Kernel\Utils\ArrUtil;
 use Psr\Http\Message\ResponseInterface;
 use function GuzzleHttp\choose_handler;
 
@@ -150,7 +150,7 @@ trait HasHttpRequests
      */
     protected function getGuzzleHandler()
     {
-        $handler = Arr::get($this->getHttpClient()->getConfig(), 'handler');
+        $handler = ArrUtil::get($this->getHttpClient()->getConfig(), 'handler');
         if ($handler instanceof HandlerStack) {
             return $handler;
         }

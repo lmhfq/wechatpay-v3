@@ -3,10 +3,10 @@
 namespace Lmh\WeChatPayV3\Service\Ecommerce\Bill;
 
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Arr;
 use Lmh\WeChatPayV3\Kernel\BaseClient;
 use Lmh\WeChatPayV3\Kernel\Exceptions\HashException;
 use Lmh\WeChatPayV3\Kernel\Exceptions\ResultException;
+use Lmh\WeChatPayV3\Kernel\Utils\ArrUtil;
 
 /**
  * Class Client.
@@ -44,12 +44,12 @@ class Client extends BaseClient
      */
     public function download($body): string
     {
-        $response = $this->requestRaw('GET', Arr::get($body, 'download_url'));
+        $response = $this->requestRaw('GET', ArrUtil::get($body, 'download_url'));
         $fileStream = $response->getBody()->getContents();
         $response->getBody()->rewind();
 
-        $hashValue = hash(Arr::get($body, 'hash_type'), $fileStream);
-        if ($hashValue != Arr::get($body, 'hash_value')) {
+        $hashValue = hash(ArrUtil::get($body, 'hash_type'), $fileStream);
+        if ($hashValue != ArrUtil::get($body, 'hash_value')) {
             throw new HashException('账单文件哈希值错误，请尝试重新下载');
         }
         return $fileStream;
