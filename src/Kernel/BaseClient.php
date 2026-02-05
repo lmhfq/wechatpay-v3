@@ -130,7 +130,7 @@ class BaseClient
                     if (!empty($this->app->config->get('platform_public_key'))) {
                         $publicKey = $this->app->config->get('platform_public_key');
                         $pureKey = preg_replace('/\-+BEGIN PUBLIC KEY\-+|\-+END PUBLIC KEY\-+|\s+/', '', $publicKey);
-                        $serialNo = sha1(base64_decode($pureKey));
+                        $serialNo = "PUB_KEY_ID_" . strtoupper(sha1(base64_decode($pureKey)));
                     } else {
                         $certificate = (new Certificate($this->app));
                         $serialNo = $certificate->getAvailableSerialNo();
