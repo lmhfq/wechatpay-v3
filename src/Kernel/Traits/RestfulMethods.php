@@ -46,7 +46,7 @@ trait RestfulMethods
      * @return array
      * @throws ResultException
      */
-    public function retrieve(string $id, string $query = null, array $options = []): array
+    public function retrieve(string $id, $query = null, array $options = []): array
     {
         $url = $this->instanceUrl($id);
         $opts = $options + ['query' => $query];
@@ -56,8 +56,8 @@ trait RestfulMethods
     /**
      * @param array $params
      * @param array $options
-     * @throws ResultException
      * @return array
+     * @throws ResultException
      */
     public function create(array $params, array $options = []): array
     {
@@ -71,8 +71,8 @@ trait RestfulMethods
      * @param string $id
      * @param array $params
      * @param array $options
-     * @throws ResultException
      * @return array
+     * @throws ResultException
      */
     public function update(string $id, array $params, array $options = []): array
     {
@@ -86,8 +86,8 @@ trait RestfulMethods
      * @param string $id
      * @param string $query
      * @param array $options
-     * @throws ResultException
      * @return array
+     * @throws ResultException
      */
     public function destroy(string $id, string $query, array $options = []): array
     {
