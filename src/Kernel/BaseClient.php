@@ -127,13 +127,9 @@ class BaseClient
                     $body = $request->getBody()->getContents();
                     $request->getBody()->rewind();
                     $params = json_decode($body, true);
-                    if ($this->app->config->get('public_key')) {
-                        $publicKey = $this->app->config->get('public_key');
-                    } else {
-                        $certificate = (new Certificate($this->app));
-                        $serialNo = $certificate->getAvailableSerialNo();
-                        $publicKey = $certificate->getPublicKey($serialNo);
-                    }
+                    $certificate = (new Certificate($this->app));
+                    $serialNo = $certificate->getAvailableSerialNo();
+                    $publicKey = $certificate->getPublicKey($serialNo);
                     if (!empty($params)) {
                         foreach ($encodeParams as $encodeParam) {
                             $value = Arr::get($params, $encodeParam);
