@@ -81,13 +81,18 @@ trait SignatureGenerator
         $signData = implode("\n", $payload) . "\n";
         $responseSign = base64_decode(Arr::get($headers, 'Wechatpay-Signature.0'));
         $serialNo = Arr::get($headers, 'Wechatpay-Serial.0');
+
         if (empty($serialNo)) {
             if (substr(strval($response->getStatusCode()), 0, 1) == '2') {
                 throw new SignInvalidException('响应中不存在证书序列号');
             }
             return true;
         }
-        $publicKey = (new Certificate($this->app))->getPublicKey($serialNo);
+        if (!empty($this->app->config->get('platform_public_key'))) {
+            $publicKey = $this->app->config->get('platform_public_key');
+        } else {
+            $publicKey = (new Certificate($this->app))->getPublicKey($serialNo);
+        }
         return boolval(openssl_verify($signData, $responseSign, $publicKey, OPENSSL_ALGO_SHA256));
     }
 }

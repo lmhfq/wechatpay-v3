@@ -127,9 +127,13 @@ class BaseClient
                     $body = $request->getBody()->getContents();
                     $request->getBody()->rewind();
                     $params = json_decode($body, true);
-                    $certificate = (new Certificate($this->app));
-                    $serialNo = $certificate->getAvailableSerialNo();
-                    $publicKey = $certificate->getPublicKey($serialNo);
+                    if (!empty($this->app->config->get('platform_public_key'))) {
+                        $publicKey = $this->app->config->get('platform_public_key');
+                    } else {
+                        $certificate = (new Certificate($this->app));
+                        $serialNo = $certificate->getAvailableSerialNo();
+                        $publicKey = $certificate->getPublicKey($serialNo);
+                    }
                     if (!empty($params)) {
                         foreach ($encodeParams as $encodeParam) {
                             $value = Arr::get($params, $encodeParam);
@@ -211,7 +215,6 @@ class BaseClient
             ) use ($handler) {
                 /** @var Promise $promise */
                 $promise = $handler($request, $options);
-
                 return $promise->then(
                     function (ResponseInterface $response) {
                         if (!$this->isResponseSignValid($response)) {

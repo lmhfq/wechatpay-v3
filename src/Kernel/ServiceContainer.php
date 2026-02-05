@@ -81,6 +81,8 @@ class ServiceContainer extends Container
             'private_key' => '',
             //商户公钥
             'public_key' => '',
+            //平台公钥
+            'platform_public_key' => '',
             'aes_key' => '',
             'redisClient' => null
         ];
