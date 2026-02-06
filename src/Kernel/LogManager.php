@@ -28,7 +28,7 @@ use function sys_get_temp_dir;
  *
  * 
  */
-class LogManager implements LoggerInterface
+class LogManager
 {
     /**
      * @var ServiceContainer
@@ -60,9 +60,6 @@ class LogManager implements LoggerInterface
         'notice' => Monolog::NOTICE,
         'warning' => Monolog::WARNING,
         'error' => Monolog::ERROR,
-        'critical' => Monolog::CRITICAL,
-        'alert' => Monolog::ALERT,
-        'emergency' => Monolog::EMERGENCY,
     ];
 
     /**
@@ -323,52 +320,6 @@ class LogManager implements LoggerInterface
         return $this;
     }
 
-    /**
-     * System is unusable.
-     *
-     * @param string $message
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function emergency($message, array $context = [])
-    {
-        return $this->driver()->emergency($message, $context);
-    }
-
-    /**
-     * Action must be taken immediately.
-     *
-     * Example: Entire website down, database unavailable, etc. This should
-     * trigger the SMS alerts and wake you up.
-     *
-     * @param string $message
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function alert($message, array $context = [])
-    {
-        return $this->driver()->alert($message, $context);
-    }
-
-    /**
-     * Critical conditions.
-     *
-     * Example: Application component unavailable, unexpected exception.
-     *
-     * @param string $message
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function critical($message, array $context = [])
-    {
-        return $this->driver()->critical($message, $context);
-    }
 
     /**
      * Runtime errors that do not require immediate action but should typically
