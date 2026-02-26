@@ -26,9 +26,9 @@ use function sys_get_temp_dir;
 /**
  * Class LogManager.
  *
- * 
+ *
  */
-class LogManager
+class LogManager implements LoggerInterface
 {
     /**
      * @var ServiceContainer
@@ -333,7 +333,7 @@ class LogManager
      */
     public function error($message, array $context = []): void
     {
-         $this->driver()->error($message, $context);
+        $this->driver()->error($message, $context);
     }
 
     /**
@@ -348,9 +348,9 @@ class LogManager
      *
      * @throws Exception
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
-        return $this->driver()->warning($message, $context);
+        $this->driver()->warning($message, $context);
     }
 
     /**
@@ -362,9 +362,9 @@ class LogManager
      *
      * @throws Exception
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
-        return $this->driver()->notice($message, $context);
+        $this->driver()->notice($message, $context);
     }
 
     /**
@@ -378,9 +378,9 @@ class LogManager
      *
      * @throws Exception
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
-        return $this->driver()->info($message, $context);
+        $this->driver()->info($message, $context);
     }
 
     /**
@@ -392,9 +392,9 @@ class LogManager
      *
      * @throws Exception
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
-        return $this->driver()->debug($message, $context);
+        $this->driver()->debug($message, $context);
     }
 
     /**
@@ -407,9 +407,9 @@ class LogManager
      *
      * @throws Exception
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
-        return $this->driver()->log($level, $message, $context);
+        $this->driver()->log($level, $message, $context);
     }
 
     /**
@@ -525,5 +525,20 @@ class LogManager
     protected function createNullDriver()
     {
         return new Monolog('wechatpay-v3', [new NullHandler()]);
+    }
+
+    public function emergency($message, array $context = []): void
+    {
+        // TODO: Implement emergency() method.
+    }
+
+    public function alert($message, array $context = []): void
+    {
+        // TODO: Implement alert() method.
+    }
+
+    public function critical($message, array $context = []): void
+    {
+        // TODO: Implement critical() method.
     }
 }
