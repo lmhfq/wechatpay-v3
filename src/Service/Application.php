@@ -72,6 +72,7 @@ class Application extends ServiceContainer
         Capital\Capitallhh\Area\ServiceProvider::class,
         Capital\Capitallhh\Bank\ServiceProvider::class,
         Transfer\Batch\ServiceProvider::class,
+        FundApp\MchTransfer\TransferBill\ServiceProvider::class,
         ProfitSharing\Order\ServiceProvider::class,
         ProfitSharing\Receiver\ServiceProvider::class,
         ProfitSharing\Transaction\ServiceProvider::class,
