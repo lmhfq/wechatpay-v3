@@ -14,7 +14,9 @@ class Client extends BaseClient
 
     public function create(array $params, array $options = []): array
     {
-        $params['appid'] = $this->app['config']->app_id;
+        if (empty($params['appid'])) {
+            $params['appid'] = $this->app['config']->app_id;
+        }
         return parent::create($params, $options);
     }
 
