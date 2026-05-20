@@ -146,7 +146,12 @@ class BaseClient
                                 Arr::set($params, $encodeParam, $encrypted);
                             }
                         }
-                        $request = $request->withBody(Psr7\stream_for(json_encode($params)));
+
+                        if (method_exists('GuzzleHttp\Psr7\Utils', 'streamFor')) {
+                            $request = $request->withBody(Psr7\Utils::streamFor(json_encode($params)));
+                        } elseif (function_exists('GuzzleHttp\Psr7\stream_for')) {
+                            $request = $request->withBody(Psr7\stream_for(json_encode($params)));
+                        }
                     }
                     $request = $request->withHeader('WeChatPay-Serial', $serialNo);
                 }
@@ -171,7 +176,13 @@ class BaseClient
                                         Arr::set($params, $decodeParam, $decryptedValue);
                                     }
                                 }
-                                $response = $response->withBody(Psr7\stream_for(json_encode($params)));
+
+                                if (method_exists('GuzzleHttp\Psr7\Utils', 'streamFor')) {
+                                    $response = $response->withBody(Psr7\Utils::streamFor(json_encode($params)));
+                                } elseif (function_exists('GuzzleHttp\Psr7\stream_for')) {
+                                    $response = $response->withBody(Psr7\stream_for(json_encode($params)));
+                                }
+
                             }
                         }
                         return $response;
