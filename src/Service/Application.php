@@ -32,7 +32,8 @@ use Lmh\WeChatPayV3\Kernel\ServiceContainer;
  * @property GoldPlan\Merchant\Client $goldPlanMerchant
  * @property Capital\Capitallhh\Area\Client $area
  * @property Capital\Capitallhh\Bank\Client $bank
- * @property Transfer\Batch\Client $transfer
+ * @property Transfer\Batch\Client $transfer 商家转账到零钱
+ * @property FundApp\MchTransfer\TransferBill\Client mchTransfer 商家转账
  * @property ProfitSharing\Order\Client $profitSharingOrder
  * @property ProfitSharing\Receiver\Client $profitSharingReceiver
  * @property ProfitSharing\Transaction\Client $profitSharingTransaction
